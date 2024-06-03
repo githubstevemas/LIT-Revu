@@ -10,31 +10,30 @@
 <body>
 
 <header>
+
+    <h1 id="title">LITRevu </h1>
+
+    {% if user.is_authenticated %}
+
     <div id="menu_header">
-        <h1 class="block">LITRevu </h1>
-
-        {% if user.is_authenticated %}
-            <a href="../home/">Flux</a>
-            <a href="../posts/">Posts</a>
-            <a href="../subs/">Subscriptions</a>
-        {% endif %}
-
+        <a href="../home/">Flux</a>
+        <a href="../posts/">Posts</a>
+        <a href="../subs/">Subscriptions</a>
     </div>
+
+    <div id="user_menu">
+        <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
+    </div>
+
+    {% endif %}
+
 </header>
 
 
 <div class="grid">
-    <p id="slogan">
-    <h2>Discover weekly, the best new books</h2>
-    Get early access to fresh books and help decide on the bestselling stories of tomorrow.
-    </p>
+
     {% block content %}{% endblock content %}
 </div>
 
-<div id="user_menu">
-    {% if user.is_authenticated %}
-    <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
-    {% endif %}
-</div>
 </body>
 </html>

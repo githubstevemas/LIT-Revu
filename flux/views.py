@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from flux.models import Review, Ticket
+from flux.models import Ticket
 
 
 @login_required()
@@ -18,3 +18,13 @@ def subs(request):
 @login_required()
 def posts(request):
     return render(request, 'flux/posts.html')
+
+
+@login_required()
+def create_review(request):
+    return render(request, 'flux/create_review.html')
+
+
+@login_required()
+def create_ticket(request):
+    return render(request, 'flux/create_ticket.html')
