@@ -3,14 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>LITRevu</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+
 </head>
 <body>
 
-    <h1>LITRevu blog</h1>
-    {% block content %}{% endblock content %}
+<header>
+    <div id="menu_header">
+        <h1 class="block">LITRevu </h1>
 
-    {% if user.is_authenticated %}
-            <p>Vous êtes connecté en tant que {{ request.user }}. <a href="{% url 'logout' %}">Se déconnecter</a></p>
+        {% if user.is_authenticated %}
+            <a href="../home/">Flux</a>
+            <a href="../posts/">Posts</a>
+            <a href="../subs/">Subscriptions</a>
         {% endif %}
+
+    </div>
+</header>
+
+
+<div class="grid">
+    <p id="slogan">
+    <h2>Discover weekly, the best new books</h2>
+    Get early access to fresh books and help decide on the bestselling stories of tomorrow.
+    </p>
+    {% block content %}{% endblock content %}
+</div>
+
+<div id="user_menu">
+    {% if user.is_authenticated %}
+    <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
+    {% endif %}
+</div>
 </body>
 </html>

@@ -1,4 +1,21 @@
+
 {% extends 'base.html' %}}
+
+{% load static %}
+
 {% block content %}
-<p>Salut c'est cool!</p>
+<div class="block"><button>Make ticket</button><button>Create review</button></div>
+<h2>Tickets :</h2>
+    {% if tickets %}
+        <div class="ticket_container">
+            {% for ticket in tickets %}
+                {{ ticket.time_created }} - Ticket by <a href="">{{ ticket.user }}</a>
+                <p>{{ ticket.book }} <button>Make review</button></p>
+
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No tickets</p>
+    {% endif %}
+
 {% endblock content %}

@@ -1,6 +1,13 @@
-# authentication/templates/authentication/signup.html
+
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+{% endblock %}
+
 {% block content %}
+
+<div class="grid">
     <h2>Inscription</h2>
     {% if form.errors %}
         {{ form.errors }}
@@ -8,6 +15,8 @@
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >S’inscrire</button>
+        <button type="submit" >Signup !</button>
     </form>
+</div>
+
 {% endblock content %}

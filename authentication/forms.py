@@ -8,7 +8,12 @@ class SignupForm(UserCreationForm):
         model = get_user_model()
         fields = ['username', 'email']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].help_text = None  # Enlever le message d'aide
+        self.fields['password1'].help_text = None  # Enlever le message d'aide
+        self.fields['password2'].help_text = None  # Enlever le message d'aide
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=20, label='Username')
-    password = forms.CharField(max_length=20, widget=forms.PasswordInput, label='Password')
+    username = forms.CharField(max_length=15, label='Username')
+    password = forms.CharField(max_length=15, widget=forms.PasswordInput, label='Password')

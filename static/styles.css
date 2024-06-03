@@ -1,0 +1,48 @@
+@font-face {
+    font-family: Comili-Book;
+    src: url('Comili-Book.otf');
+}
+
+h1 {
+    font-family: Comili-Book;
+}
+
+button {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.block {
+    display: flex;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    justify-items: center;
+}
+
+.ticket_container{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 30px;
+    margin: 20px;
+}
+
+#user_menu {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+#slogan {
+    background-color: yellow;
+}
+
+#menu_header {
+    display: flex;
+    align-items: center;
+    background-color: grey;
+    gap: 20px
+}
