@@ -1,5 +1,5 @@
 body {
-    background-color: #F3F0E2;
+    background-color: #FFFFF2;
 }
 
 header {
@@ -11,8 +11,17 @@ header {
     margin-bottom: 70px;
 }
 
+footer {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 h2 {
     margin-top: 60px;
+    font-size: 32px;
 }
 
 button,
@@ -60,11 +69,19 @@ button:hover,
 .ticket_container{
     display: flex;
     flex-direction: column;
-    width: 800px;
+    width: 600px;
 }
 
 .ticket {
-    background-color: #F9F7F1;
+    border: 6px dashed #42494C;
+    background-color: white;
+    padding: 20px;
+    margin: 20px;
+}
+
+.review {
+    border: 6px dashed #42494C;
+    background-color: white;
     padding: 20px;
     margin: 20px;
 }
@@ -79,6 +96,10 @@ button:hover,
 
 .description_ticket {
     margin: 30px;
+}
+
+.headline_review {
+
 }
 
 #ticket_button {
@@ -97,14 +118,14 @@ button:hover,
 }
 
 #title {
-    margin-left: 130px;
+    margin-left: 180px;
     font-size: 38px;
 }
 
 #user_menu {
     display: block;
     position: absolute;
-    right: 130px;
+    right: 180px;
 }
 
 #menu_header {

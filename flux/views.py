@@ -8,8 +8,8 @@ from flux.forms import TicketForm, ReviewForm
 @login_required()
 def home(request):
     tickets = Ticket.objects.all()
-    # reviews = Review.objects.all()
-    return render(request, 'flux/home.html', {'tickets': tickets})
+    reviews = Review.objects.all()
+    return render(request, 'flux/home.html', {'tickets': tickets, 'reviews': reviews})
 
 
 @login_required()
