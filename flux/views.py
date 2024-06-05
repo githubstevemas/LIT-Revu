@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from flux.models import Ticket
+from django.shortcuts import render, redirect
+
+from flux.models import Ticket, Review
+from flux.forms import TicketForm, ReviewForm
 
 
 @login_required()
@@ -27,4 +29,27 @@ def create_review(request):
 
 @login_required()
 def create_ticket(request):
-    return render(request, 'flux/create_ticket.html')
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            return render(request, 'flux/create_ticket.html', {'form': form})
+    else:
+        form = TicketForm()
+        return render(request, 'flux/create_ticket.html', {'form': form})
+
+
+@login_required()
+def create_review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            return render(request, 'flux/create_review.html', {'form': form})
+    else:
+        form = ReviewForm()
+        return render(request, 'flux/create_review.html', {'form': form})
