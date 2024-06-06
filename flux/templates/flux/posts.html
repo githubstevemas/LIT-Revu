@@ -23,6 +23,19 @@
             {% endif %}
         {% endfor %}
 
+        {% for review in reviews %}
+                {% if review.user == user %}
+                    <div class="review">
+                        <div>
+                            <span class="title_ticket">{{ review.ticket }}</span>
+                            <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - posted by you</span>
+                        </div>
+                        <h3>{{ review.headline }} - {{ review.rating }}</h3>
+                        <p class="description_ticket">{{ review.body }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
     {% endif %}
 </div>
 {% endblock content %}

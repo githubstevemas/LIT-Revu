@@ -61,6 +61,11 @@ button:hover,
   align-items: center;
 }
 
+.reviewed_ticket {
+    border: 2px solid #42494C;
+    padding: 10px;
+}
+
 .block {
     display: flex;
     justify-content: center;

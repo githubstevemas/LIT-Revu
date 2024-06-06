@@ -33,6 +33,13 @@
             </div>
             <h3>{{ review.headline }} - {{ review.rating }}</h3>
             <p class="description_ticket">{{ review.body }}</p>
+
+            <div class="reviewed_ticket">
+                <span class="title_ticket">{{ review.ticket.title }}</span>
+                <span class="user_ticket">{{ review.ticket.time_created|date:"Y-m-d" }} - <a href="">{{ review.ticket.user }}</a></span>
+
+                <p class="description_ticket">{{ review.ticket.description }}</p>
+            </div>
         </div>
 
         {% endfor %}

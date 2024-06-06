@@ -7,8 +7,8 @@ from flux.forms import TicketForm, ReviewForm
 
 @login_required()
 def home(request):
-    tickets = Ticket.objects.all()
-    reviews = Review.objects.all()
+    tickets = Ticket.objects.all().order_by('-time_created')
+    reviews = Review.objects.all().order_by('-time_created')
     return render(request, 'flux/home.html', {'tickets': tickets, 'reviews': reviews})
 
 
