@@ -118,14 +118,14 @@ button:hover,
 }
 
 #title {
-    margin-left: 180px;
+    margin-left: 200px;
     font-size: 38px;
 }
 
 #user_menu {
     display: block;
     position: absolute;
-    right: 180px;
+    right: 200px;
 }
 
 #menu_header {

@@ -11,32 +11,37 @@
 
 <h2>Tickets :</h2>
 <div class="ticket_container">
+
     {% if tickets %}
 
-    {% for ticket in tickets %}
-    <div class="ticket">
-        <div>
-            <span class="title_ticket">{{ ticket.title }}</span>
-            <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="">{{ ticket.user }}</a></span>
+        {% for ticket in tickets %}
+        <div class="ticket">
+            <div>
+                <span class="title_ticket">{{ ticket.title }}</span>
+                <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="">{{ ticket.user }}</a></span>
+            </div>
+            <p class="description_ticket">{{ ticket.description }}</p>
+            <a id="ticket_button" href="../create_review/" class="button">Make review</a>
         </div>
-        <p class="description_ticket">{{ ticket.description }}</p>
-        <a id="ticket_button" href="../create_review/" class="button">Make review</a>
-    </div>
-    {% endfor %}
+        {% endfor %}
 
-    {% for review in reviews %}
-    <div class="review">
-        <div>
-            <span class="title_ticket">{{ review.ticket }}</span>
-            <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - <a href="">{{ review.user }}</a></span>
+        {% for review in reviews %}
+        <div class="review">
+            <div>
+                <span class="title_ticket">{{ review.ticket }}</span>
+                <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - <a href="">{{ review.user }}</a></span>
+            </div>
+            <h3>{{ review.headline }} - {{ review.rating }}</h3>
+            <p class="description_ticket">{{ review.body }}</p>
         </div>
-        <h3>{{ review.headline }} - {{ review.rating }}</h3>
-        <p class="description_ticket">{{ review.body }}</p>
-    </div>
 
-    {% endfor %}
+        {% endfor %}
+
     {% else %}
-    <p>No tickets</p>
+
+        <p>No tickets</p>
     {% endif %}
+
 </div>
+
 {% endblock content %}

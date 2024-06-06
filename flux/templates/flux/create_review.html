@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<h2>Create Review :</h2>
+<h2>Create Review</h2>
 <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Envoyer">
+    <input class="button" type="submit" value="Send">
 </form>
 
 {% endblock content %}

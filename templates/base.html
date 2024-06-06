@@ -15,15 +15,15 @@
 
     {% if user.is_authenticated %}
 
-    <div id="menu_header">
-        <a class="button_menu" href="../home/">Flux</a>
-        <a class="button_menu" href="../posts/">Posts</a>
-        <a class="button_menu" href="../subs/">Subscriptions</a>
-    </div>
+        <div id="menu_header">
+            <a class="button_menu" href="../home/">Flux</a>
+            <a class="button_menu" href="../posts/">Posts</a>
+            <a class="button_menu" href="../subs/">Subscriptions</a>
+        </div>
 
-    <div id="user_menu">
-        <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
-    </div>
+        <div id="user_menu">
+            <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
+        </div>
 
     {% endif %}
 

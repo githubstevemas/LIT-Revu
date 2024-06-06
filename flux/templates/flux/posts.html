@@ -1,16 +1,28 @@
-
 {% extends 'base.html' %}}
 
 {% load static %}
 
 {% block content %}
 
-<h2>Posted :</h2>
-    {% if subs %}
+<h2>You Posted</h2>
 
+<div class="ticket_container">
+    {% if tickets %}
 
-    {% else %}
-        <p>No posts</p>
+        {% for ticket in tickets %}
+            {% if ticket.user == user %}
+                <div class="ticket">
+                    <div>
+                        <span class="title_ticket">{{ ticket.title }}</span>
+                        <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - posted by you</span>
+                    </div>
+                    <p class="description_ticket">{{ ticket.description }}</p>
+                    <div  id="ticket_button" ><a class="button">Modify</a><a class="button">Delete</a></div>
+
+                </div>
+            {% endif %}
+        {% endfor %}
+
     {% endif %}
-
+</div>
 {% endblock content %}

@@ -19,7 +19,10 @@ def subs(request):
 
 @login_required()
 def posts(request):
-    return render(request, 'flux/posts.html')
+    tickets = Ticket.objects.all()
+    reviews = Review.objects.all()
+    return render(request, 'flux/posts.html',
+                  {'tickets': tickets, 'reviews': reviews, 'user': request.user})
 
 
 @login_required()
