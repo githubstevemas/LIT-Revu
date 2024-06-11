@@ -1,5 +1,11 @@
+@font-face {
+    font-family: Espera;
+    src: url(fonts/Espera.ttf);
+}
+
 body {
     background-color: #FFFFF2;
+    font-family: Espera;
 }
 
 header {
@@ -7,16 +13,16 @@ header {
     align-items: center;
     box-shadow: 0 2px 0 rgba(0,0,0,0.1);
     width: 100%;
-    height: 60px;
+    height: 70px;
     margin-bottom: 70px;
 }
 
 footer {
-    display: block;
-    position: absolute;
+    margin-top: 90px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
     bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 h2 {
@@ -30,7 +36,7 @@ button,
     background-color: #42494C;
     border-radius: 18px;
     color: #F3F0E2;
-    padding: 8px;
+    padding: 9px;
     padding-left: 15px;
     padding-right: 15px;
     margin-left: 20px;
@@ -54,6 +60,11 @@ button:hover,
     cursor: pointer;
 }
 
+.page_title {
+  align-self: flex-start;
+  margin-left: 25%;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -62,7 +73,8 @@ button:hover,
 }
 
 .reviewed_ticket {
-    border: 2px solid #42494C;
+    border: 1px solid #BDBDB6;
+    background-color: #FFFFF2;
     padding: 10px;
 }
 
@@ -78,15 +90,17 @@ button:hover,
 }
 
 .ticket {
-    border: 6px dashed #42494C;
+    /* border: 6px dashed #42494C; */
     background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     padding: 20px;
     margin: 20px;
 }
 
 .review {
-    border: 6px dashed #42494C;
+    /* border: 6px dashed #42494C; */
     background-color: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     padding: 20px;
     margin: 20px;
 }

@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load custom_tags %}
+
 {% block content %}
 
 <div>
@@ -9,44 +11,54 @@
     <a href="../create_review/" class="button">Make review</a>
 </div>
 
-<h2>Tickets :</h2>
+<h2 class="page_title">Recents Posts :</h2>
 <div class="ticket_container">
 
     {% if tickets %}
 
-        {% for ticket in tickets %}
-        <div class="ticket">
-            <div>
-                <span class="title_ticket">{{ ticket.title }}</span>
-                <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="">{{ ticket.user }}</a></span>
-            </div>
-            <p class="description_ticket">{{ ticket.description }}</p>
-            <a id="ticket_button" href="../create_review/" class="button">Make review</a>
+    {% for ticket in tickets %}
+    <div class="ticket">
+        <div>
+            <span class="title_ticket">{{ ticket.title }}</span>
+            <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="{% url 'user_page' user.id %}">{{ ticket.user }}</a></span>
         </div>
-        {% endfor %}
+        <p class="description_ticket">{{ ticket.description }}</p>
+        <a id="ticket_button" class="button" href="{% url 'create_ticket_review' ticket.id %}">Make review</a>
+    </div>
+    {% endfor %}
 
-        {% for review in reviews %}
-        <div class="review">
-            <div>
-                <span class="title_ticket">{{ review.ticket }}</span>
-                <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - <a href="">{{ review.user }}</a></span>
-            </div>
-            <h3>{{ review.headline }} - {{ review.rating }}</h3>
-            <p class="description_ticket">{{ review.body }}</p>
-
-            <div class="reviewed_ticket">
-                <span class="title_ticket">{{ review.ticket.title }}</span>
-                <span class="user_ticket">{{ review.ticket.time_created|date:"Y-m-d" }} - <a href="">{{ review.ticket.user }}</a></span>
-
-                <p class="description_ticket">{{ review.ticket.description }}</p>
-            </div>
+    {% for review in reviews %}
+    <div class="review">
+        <div>
+            <span class="title_ticket">{{ review.ticket }}</span>
+            <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - <a href="">{{ review.user }}</a></span>
         </div>
+        <h3>{{ review.headline }} -
+            {% for i in review.rating|times %}
+                <i class="fas fa-star"></i>
+            {% endfor %}
+            {% for i in 5|times %}
+                {% if i >= review.rating %}
+                    <i class="far fa-star"></i>
+                {% endif %}
+            {% endfor %}
+        </h3>
 
-        {% endfor %}
+        <p class="description_ticket">{{ review.body }}</p>
+
+        <div class="reviewed_ticket">
+            <span class="title_ticket">{{ review.ticket.title }}</span>
+            <span class="user_ticket">{{ review.ticket.time_created|date:"Y-m-d" }} - <a href="">{{ review.ticket.user }}</a></span>
+
+            <p class="description_ticket">{{ review.ticket.description }}</p>
+        </div>
+    </div>
+
+    {% endfor %}
 
     {% else %}
 
-        <p>No tickets</p>
+    <p>No tickets</p>
     {% endif %}
 
 </div>

@@ -5,20 +5,20 @@
     <title>LITRevu</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
 <header>
 
-    <h1 id="title">LITRevu </h1>
+    <span id="title">LITRevu </span>
 
     {% if user.is_authenticated %}
 
         <div id="menu_header">
-            <a class="button_menu" href="../home/">Flux</a>
-            <a class="button_menu" href="../posts/">Posts</a>
-            <a class="button_menu" href="../subs/">Subscriptions</a>
+            <a class="button_menu" href="{% url 'home' %}">Flux</a>
+            <a class="button_menu" href="{% url 'posts' %}">Posts</a>
+            <a class="button_menu" href="{% url 'subs' %}">Subscriptions</a>
         </div>
 
         <div id="user_menu">
@@ -36,7 +36,13 @@
 
 
 <footer>
-
+    <div>
+        © LITRevu - 2024
+    </div>
+    <div>
+        <a class="button_menu" href="">Cookies</a>
+        <a class="button_menu" href="">Mentions Légales</a>
+    </div>
 </footer>
 </body>
 </html>

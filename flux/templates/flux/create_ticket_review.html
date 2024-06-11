@@ -1,0 +1,23 @@
+{% extends 'base.html' %}}
+
+{% load static %}
+
+{% block content %}
+
+<h2 class="page_title">Create Review For :</h2>
+
+<div class="ticket">
+    <div>
+        <span class="title_ticket">{{ ticket.title }}</span>
+        <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="{% url 'user_page' user.id %}">{{ ticket.user }}</a></span>
+    </div>
+    <p class="description_ticket">{{ ticket.description }}</p>
+</div>
+
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="button" type="submit" value="Send">
+</form>
+
+{% endblock content %}
