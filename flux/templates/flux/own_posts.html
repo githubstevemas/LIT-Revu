@@ -1,0 +1,52 @@
+{% extends 'base.html' %}}
+
+{% load static %}
+
+{% block content %}
+
+<h2 class="page_title">Your Activity :</h2>
+
+<div class="ticket_container">
+    {% if tickets %}
+
+        {% for ticket in tickets %}
+            {% if ticket.user == user %}
+
+
+                <div class="ticket">
+                        <div>
+                            <img class="ticket_image" src="{{ ticket.image.url }}">
+                        </div>
+                        <div class="ticket_content">
+                            <div class="ticket_header">
+                                <span class="title_ticket">{{ ticket.title }}</span>
+                                <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - by you</span>
+                            </div>
+                            <p class="description_ticket">{{ ticket.description }}</p>
+                            <div  id="ticket_button">
+                                <a class="button" href="{% url 'edit_ticket' ticket.id %}">Modify</a>
+                                <a class="button" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
+                            </div>
+                        </div>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+
+        {% for review in reviews %}
+                {% if review.user == user %}
+
+                    <div class="review">
+                        <div>
+                            <span class="title_ticket">{{ review.ticket }}</span>
+                            <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }} - posted by you</span>
+                        </div>
+                        <h3>{{ review.headline }} - {{ review.rating }}</h3>
+                        <p class="description_ticket">{{ review.body }}</p>
+                    </div>
+
+                {% endif %}
+            {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}}
+
+{% load static %}
+
+{% block content %}
+
+<h2 class="page_title">Delete ?</h2>
+<span>{{ ticket.title }}</span>
+    <form method="post">
+        {{ delete_form }}
+        {% csrf_token %}
+        <button type="submit" >Confirm</button>
+    </form>
+
+{% endblock content %}
