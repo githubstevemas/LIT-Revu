@@ -22,7 +22,7 @@
         </div>
 
         <div id="user_menu">
-            <p>{{ request.user }} - <a href="{% url 'logout' %}">Disconnect</a></p>
+            <p><a class="button_menu" href=""><i class="fa-solid fa-user"></i> {{ request.user }}</a> <a class="button_menu" href="{% url 'logout' %}">Disconnect</a></p>
         </div>
 
     {% endif %}
@@ -40,8 +40,9 @@
         © LITRevu - 2024
     </div>
     <div>
-        <a class="button_menu" href="">Cookies</a>
-        <a class="button_menu" href="">Mentions Légales</a>
+        <a class="button_menu" href="">About</a>
+        <a class="button_menu" href="">Terms</a>
+        <a class="button_menu" href="">Privacy</a>
     </div>
 </footer>
 </body>

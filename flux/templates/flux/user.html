@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}}
+
+{% load static %}
+
+{% block content %}
+    <h2 class="page_title">{{ user.username }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if is_following %}
+            <button type="submit" name="unfollow" class="button">Unfollow</button>
+        {% else %}
+            <button type="submit" name="follow" class="button">Follow</button>
+        {% endif %}
+    </form>
+{% endblock content %}

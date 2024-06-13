@@ -1,10 +1,42 @@
-
 {% extends 'base.html' %}}
 
 {% load static %}
 
 {% block content %}
 
-<h2 class="page_title">Your subscriptions</h2>
+<h2 class="page_title">Search User</h2>
+<form method="get" action="">
+    <input type="text" name="q" placeholder="Search" value="username">
+    <button type="submit">Search</button>
+</form>
 
+<ul>
+    {% if results %}
+        {% for result in results %}
+            <li><a class="button_menu" href="{% url 'user' result.id %}"><i class="fa-solid fa-user"></i> {{ result.username }}</a></li>
+        {% endfor %}
+    {% endif %}
+</ul>
+
+<h2 class="page_title">Following</h2>
+<ul>
+    {% for follow in followings %}
+    <li>{{ follow.followed_user.username }}
+        <button type="submit" name="unfollow" class="button">Unfollow</button>
+    </li>
+    {% empty %}
+    <li>You are not following anyone :(</li>
+    {% endfor %}
+</ul>
+
+<h2 class="page_title">Followers</h2>
+<ul>
+    {% for follow in followers %}
+    <li>{{ follow.user.username }}
+        <button type="submit" class="button">Block</button>
+    </li>
+    {% empty %}
+    <li>You have no followers :(</li>
+    {% endfor %}
+</ul>
 {% endblock content %}

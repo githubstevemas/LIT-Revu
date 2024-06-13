@@ -1,5 +1,7 @@
 from django import forms
-from flux.models import Ticket, Review
+from django.contrib.auth import get_user_model
+
+from flux.models import Ticket, Review, UserFollows
 
 
 class TicketForm(forms.ModelForm):
@@ -50,3 +52,16 @@ class ReviewTicketForm(forms.ModelForm):
 
 class DeleteTicketForm(forms.Form):
     delete_ticket = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+
+User = get_user_model()
+
+
+class FollowUserForm(forms.ModelForm):
+    class Meta:
+        model = UserFollows
+        fields = ['followed_user']
+        widgets = {
+            'followed_user': forms.Select(attrs={'class': 'form-control'}),
+        }
+

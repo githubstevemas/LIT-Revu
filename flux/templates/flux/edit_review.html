@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2 class="page_title">Modify your ticket</h2>
+        <form method="post">
+            {{ edit_form.as_p }}
+            {% csrf_token %}
+            <button type="submit" >Save</button>
+        </form>
+{% endblock content %}

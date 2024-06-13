@@ -13,7 +13,7 @@
             <div class="ticket_content">
                 <div class="ticket_header">
                     <span class="title_ticket">{{ ticket.title }}</span>
-                    <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="{% url 'user_page' ticket.user.id %}">{{ ticket.user }}</a></span>
+                    <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }} - <a href="{% url 'user' ticket.user.id %}">{{ ticket.user }}</a></span>
                 </div>
                 <p class="description_ticket">{{ ticket.description }}</p>
                 <a id="ticket_button" class="button" href="{% url 'create_ticket_review' ticket.id %}">Make review</a>
