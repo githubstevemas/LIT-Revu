@@ -1,16 +1,27 @@
+from itertools import chain
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import CharField, Value
 from django.shortcuts import render, redirect, get_object_or_404
 
 from flux.models import Ticket, Review, UserFollows
-from flux.forms import TicketForm, ReviewForm, ReviewTicketForm, DeleteTicketForm, FollowUserForm
+from flux.forms import TicketForm, ReviewForm, ReviewTicketForm, DeleteTicketForm
 
 
 @login_required()
 def home(request):
-    tickets = Ticket.objects.all()
-    reviews = Review.objects.all()
-    return render(request, 'flux/home.html', {'tickets': tickets, 'reviews': reviews})
+    tickets = Ticket.objects.all().annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.all().annotate(content_type=Value('REVIEW', CharField()))
+
+    """tickets = tickets.annotata(content_type=Value('TICKET', CharField()))
+    reviews = reviews.annotata(content_type=Value('REVIEW', CharField()))"""
+    
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created, reverse=True
+    )
+    return render(request, 'flux/home.html', {'posts': posts})
 
 
 @login_required()

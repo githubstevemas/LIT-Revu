@@ -14,81 +14,79 @@
 <h2 class="page_title">Recents Posts :</h2>
 <div class="ticket_container">
 
-    {% if tickets %}
 
-    {% for ticket in tickets %}
-    <div class="ticket">
-        <div>
-            <img class="ticket_image" src="{{ ticket.image.url }}">
-        </div>
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ ticket.title }}</span>
-                <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }}
-                    {% if ticket.user == request.user %}
-                        <span>posted by you</span>
-                    {% else %}
-                        <a class="button_menu" href="{% url 'user' ticket.user.id %}"><i class="fa-solid fa-user"></i> {{ ticket.user }}</a></span>
-                {% endif %}
-            </div>
-            <p class="description_ticket">{{ ticket.description }}</p>
-            {% if not ticket.reviewed %}
-            <div class="ticket_button">
-                <a class="button" href="{% url 'create_ticket_review' ticket.id %}">Make review</a>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
-
-    {% for review in reviews %}
-    <div class="review">
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ review.ticket }}</span>
-                <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }}
-                {% if review.user == request.user %}
-                    <span>posted by you</span>
-                {% else %}
-                    <a class="button_menu" href="{% url 'user' review.user.id %}"><i class="fa-solid fa-user"></i> {{ review.user }}</a></span>
-                {% endif %}
-
-            </div>
-            <h3>{{ review.headline }} -
-                {% for i in review.rating|times %}
-                <i class="fa-solid fa-bookmark"></i>
-                {% endfor %}
-                {% for i in 5|times %}
-                {% if i >= review.rating %}
-                <i class="fa-regular fa-bookmark"></i>
-                {% endif %}
-                {% endfor %}
-            </h3>
-
-            <p class="description_ticket">{{ review.body }}</p>
-
-            <div class="reviewed_ticket">
-                <div>
-                    <img class="ticket_image" src="{{ review.ticket.image.url }}">
-                </div>
-                <div class="ticket_content">
-                    <div class="ticket_header">
-                        <span class="title_ticket">{{ review.ticket.title }}</span>
-                        <span class="user_ticket">{{ review.ticket.time_created|date:"Y-m-d" }}<a class="button_menu"
-                                                                                                  href="{% url 'user' review.ticket.user.id %}"><i
-                                class="fa-solid fa-user"></i> {{ review.ticket.user }}</a></span>
+    {% if posts %}
+        {% for post in posts %}
+            {% if post.content_type == 'TICKET' %}
+                <div class="ticket">
+                    <div>
+                        <img class="ticket_image" src="{{ post.image.url }}">
                     </div>
-                    <p class="description_ticket">{{ review.ticket.description }}</p>
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ post.title }}</span>
+                            <span class="user_ticket">{{ post.time_created|date:"Y-m-d" }}
+                                {% if post.user == request.user %}
+                                    <span>posted by you</span>
+                                {% else %}
+                                    <a class="button_menu" href="{% url 'user' post.user.id %}"><i class="fa-solid fa-user"></i> {{ post.user }}</a></span>
+                            {% endif %}
+                        </div>
+                        <p class="description_ticket">{{ post.description }}</p>
+                        {% if not post.reviewed %}
+                        <div class="ticket_button">
+                            <a class="button" href="{% url 'create_ticket_review' post.id %}">Make review</a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </div>
 
+            {% elif post.content_type == 'REVIEW' %}
+                <div class="review">
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ post.ticket }}</span>
+                            <span class="user_ticket">{{ post.time_created|date:"Y-m-d" }}
+                            {% if post.user == post.user %}
+                                <span>posted by you</span>
+                            {% else %}
+                                <a class="button_menu" href="{% url 'user' post.user.id %}"><i class="fa-solid fa-user"></i> {{ post.user }}</a></span>
+                            {% endif %}
+
+                        </div>
+                        <h3>{{ review.headline }} -
+                            {% for i in post.rating|times %}
+                            <i class="fa-solid fa-bookmark"></i>
+                            {% endfor %}
+                            {% for i in 5|times %}
+                            {% if i >= post.rating %}
+                            <i class="fa-regular fa-bookmark"></i>
+                            {% endif %}
+                            {% endfor %}
+                        </h3>
+
+                        <p class="description_ticket">{{ post.body }}</p>
+
+                        <div class="reviewed_ticket">
+                            <div>
+                                <img class="ticket_image" src="{{ post.ticket.image.url }}">
+                            </div>
+                            <div class="ticket_content">
+                                <div class="ticket_header">
+                                    <span class="title_ticket">{{ post.ticket.title }}</span>
+                                    <span class="user_ticket">{{ post.ticket.time_created|date:"Y-m-d" }}<a class="button_menu"
+                                                                                                              href="{% url 'user' post.ticket.user.id %}"><i
+                                            class="fa-solid fa-user"></i> {{ post.ticket.user }}</a></span>
+                                </div>
+                                <p class="description_ticket">{{ post.ticket.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
         {% endfor %}
-
-        {% else %}
-
+    {% else %}
         <p>No tickets</p>
-        {% endif %}
+    {% endif %}
 
     </div>
 </div>
