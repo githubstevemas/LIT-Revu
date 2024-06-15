@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if request.user.profile_photo %}
+<div class="page_title">
+    <img class="large_profile_photo" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
+    <h1>{{ request.user.username }}</h1>
+</div>
+{% else %}
+<p>No profile photo available.</p>
+{% endif %}
+
+<div class="page_title">
+    <h2>Last Actions</h2>
+</div>
+
+<div class="page_title">
+    <h2>Edit Account</h2>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock content %}

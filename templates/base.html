@@ -22,7 +22,9 @@
         </div>
 
         <div id="user_menu">
-            <p><a class="button_menu" href=""><i class="fa-solid fa-user"></i> {{ request.user }}</a> <a class="button_menu" href="{% url 'logout' %}">Disconnect</a></p>
+            <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+            <a class="button_menu" href="{% url 'account' %}"> {{ request.user }}</a>
+            <a class="button_menu" href="{% url 'logout' %}">Disconnect</a>
         </div>
 
     {% endif %}

@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
+from authentication.models import User
+
 
 class SignupForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -18,3 +20,14 @@ class SignupForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=15, label='Username')
     password = forms.CharField(max_length=15, widget=forms.PasswordInput, label='Password')
+
+
+class AccountForm(forms.ModelForm):
+    profile_photo = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={'class': 'profile-photo-input'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['profile_photo']

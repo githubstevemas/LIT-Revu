@@ -12,6 +12,7 @@ urlpatterns = [
     path('login/', authentication.views.login_page, name='login'),
     path('logout/', authentication.views.logout_user, name='logout'),
     path('home/', flux.views.home, name='home'),
+    path('account/', flux.views.account, name='account'),
     path('signup/', authentication.views.signup_page, name='signup'),
     path('user/<int:user_id>/', flux.views.user_page, name='user'),
     path('subs/', flux.views.subs, name='subs'),

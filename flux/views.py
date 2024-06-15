@@ -4,29 +4,49 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import CharField, Value
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 from flux.models import Ticket, Review, UserFollows
 from flux.forms import TicketForm, ReviewForm, ReviewTicketForm, DeleteTicketForm
+from authentication.forms import AccountForm
 
 
 @login_required()
 def home(request):
     tickets = Ticket.objects.all().annotate(content_type=Value('TICKET', CharField()))
     reviews = Review.objects.all().annotate(content_type=Value('REVIEW', CharField()))
-
-    """tickets = tickets.annotata(content_type=Value('TICKET', CharField()))
-    reviews = reviews.annotata(content_type=Value('REVIEW', CharField()))"""
     
     posts = sorted(
         chain(tickets, reviews),
         key=lambda post: post.time_created, reverse=True
     )
-    return render(request, 'flux/home.html', {'posts': posts})
+
+    paginator = Paginator(posts, 4)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
+
+    return render(request, 'flux/home.html', context=context)
 
 
 @login_required()
 def subs(request):
     return render(request, 'flux/subscriptions.html')
+
+
+@login_required()
+def account(request):
+    if request.method == 'POST':
+        form = AccountForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            return render(request, 'flux/account.html', {'form': form})
+    else:
+        form = AccountForm(instance=request.user)
+        return render(request, 'flux/account.html', {'form': form})
 
 
 @login_required()

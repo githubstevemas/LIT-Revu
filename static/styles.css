@@ -33,9 +33,34 @@ footer {
     align-items: center;
 }
 
+h1 {
+    font-size: 52px;
+}
+
 h2 {
     margin-top: 60px;
     font-size: 32px;
+}
+
+.large_profile_photo {
+    border-radius: 50%;
+    border: 2px solid rgba(66, 73, 76, 0.7);
+    width: 150px;
+    height: 150px;
+}
+
+.profile_image {
+    border-radius: 50%;
+    border: 2px solid rgba(66, 73, 76, 0.7);
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    margin-right: 5px;
+}
+
+.profile-photo-input ~ a,
+.profile-photo-input ~ p {
+    display: none;
 }
 
 button,
@@ -51,6 +76,37 @@ button,
     margin-right: 20px;
 }
 
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button_actual_page {
+    background-color: #FFFFF2;
+    border: 2px solid #42494C;
+    border-radius: 8px;
+    text-align: center;
+    color: #42494C;
+    font-weight: bold;
+    width: 12px;
+    padding: 9px;
+    margin: 10px;
+}
+
+.button_page {
+    text-decoration: none;
+    background-color: #42494C;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 17px;
+    color: #FFFFF2;
+    width: 12px;
+    padding: 9px;
+    margin: 10px;
+}
+
 .button_menu {
     text-decoration: none;
     font-size: 17px;
@@ -62,6 +118,7 @@ button,
     color: grey;
 }
 
+.button_page:hover,
 button:hover,
 .button:hover {
     background-color: #2F3437;
@@ -185,7 +242,8 @@ button:hover,
 }
 
 #user_menu {
-    display: block;
+    display: flex;
+    align-items: center;
     position: absolute;
     right: 200px;
 }
