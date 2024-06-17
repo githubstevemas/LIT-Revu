@@ -13,21 +13,23 @@ from authentication.forms import AccountForm
 
 @login_required()
 def home(request):
-    tickets = Ticket.objects.all().annotate(content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.all().annotate(content_type=Value('REVIEW', CharField()))
-    
+    followings = UserFollows.objects.filter(user=request.user).values_list('followed_user')
+    tickets = Ticket.objects.filter(user__in=followings).annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(user__in=followings).annotate(content_type=Value('REVIEW', CharField()))
+
     posts = sorted(
         chain(tickets, reviews),
         key=lambda post: post.time_created, reverse=True
     )
 
+    unreviewed = Ticket.objects.filter(reviewed=False)
+
     paginator = Paginator(posts, 4)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'page_obj': page_obj}
 
-    return render(request, 'flux/home.html', context=context)
+    return render(request, 'flux/home.html', {'page_obj': page_obj, 'unreviewed': unreviewed})
 
 
 @login_required()
@@ -37,6 +39,22 @@ def subs(request):
 
 @login_required()
 def account(request):
+    tickets = Ticket.objects.filter(user=request.user).annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(user=request.user).annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created, reverse=True
+    )
+
+    prefered_books = Review.objects.filter(user=request.user).order_by('-rating')
+
+    tickets_count = tickets.count()
+    reviews_count = reviews.count()
+
+    followings = UserFollows.objects.filter(user=request.user).count
+    followers = UserFollows.objects.filter(followed_user=request.user).count
+
     if request.method == 'POST':
         form = AccountForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -46,7 +64,15 @@ def account(request):
             return render(request, 'flux/account.html', {'form': form})
     else:
         form = AccountForm(instance=request.user)
-        return render(request, 'flux/account.html', {'form': form})
+        return render(request, 'flux/account.html', {
+            'form': form,
+            'posts': posts,
+            'tickets_count': tickets_count,
+            'reviews_count': reviews_count,
+            'prefered_books': prefered_books,
+            'followings': followings,
+            'followers': followers
+        })
 
 
 @login_required()
@@ -169,6 +195,23 @@ User = get_user_model()
 @login_required()
 def user_page(request, user_id):
     user = get_object_or_404(User, id=user_id)
+
+    tickets = Ticket.objects.filter(user=user).annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(user=user).annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created, reverse=True
+    )
+
+    prefered_books = Review.objects.filter(user=user).order_by('-rating')
+
+    tickets_count = tickets.count()
+    reviews_count = reviews.count()
+
+    followings = UserFollows.objects.filter(user=user).count
+    followers = UserFollows.objects.filter(followed_user=user).count
+
     is_following = UserFollows.objects.filter(user=request.user, followed_user=user).exists()
 
     if request.method == 'POST':
@@ -181,7 +224,15 @@ def user_page(request, user_id):
                 UserFollows.objects.filter(user=request.user, followed_user=user).delete()
         return redirect('user', user_id=user_id)
 
-    return render(request, 'flux/user.html', {'user': user, 'is_following': is_following})
+    return render(request, 'flux/user.html', {'user': user,
+                                              'is_following': is_following,
+                                              'posts': posts,
+                                              'tickets_count': tickets_count,
+                                              'reviews_count': reviews_count,
+                                              'prefered_books': prefered_books,
+                                              'followings': followings,
+                                              'followers': followers
+                                              })
 
 
 @login_required()

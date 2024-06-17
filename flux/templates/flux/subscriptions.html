@@ -19,24 +19,33 @@
 </ul>
 
 <h2 class="page_title">Following</h2>
-<ul>
-    {% for follow in followings %}
-    <li>{{ follow.followed_user.username }}
-        <button type="submit" name="unfollow" class="button">Unfollow</button>
-    </li>
-    {% empty %}
-    <li>You are not following anyone :(</li>
-    {% endfor %}
-</ul>
+<div class="ticket">
+    <ul>
+        {% for follow in followings %}
+        <li>
+            <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
+                {{ follow.followed_user.username }}
+            </a>
+            <button type="submit" name="unfollow" class="follow_button"><i class="fas fa-user-plus"></i></button>
+        </li>
+        {% empty %}
+        <li>You are not following anyone :(</li>
+        {% endfor %}
+    </ul>
+</div>
 
 <h2 class="page_title">Followers</h2>
-<ul>
-    {% for follow in followers %}
-    <li>{{ follow.user.username }}
-        <button type="submit" class="button">Block</button>
-    </li>
-    {% empty %}
-    <li>You have no followers :(</li>
-    {% endfor %}
-</ul>
+<div class="ticket">
+    <ul>
+        {% for follow in followers %}
+        <li>
+            <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
+                {{ follow.user.username }}
+            </a>
+        </li>
+        {% empty %}
+        <li>You have no followers :(</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock content %}

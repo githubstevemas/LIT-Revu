@@ -4,27 +4,60 @@
 
 {% block content %}
 
-{% if request.user.profile_photo %}
+
 <div class="page_title">
-    <img class="large_profile_photo" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
+    {% if request.user.profile_photo %}
+        <img class="large_profile_photo" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
+    {% else %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
     <h1>{{ request.user.username }}</h1>
 </div>
-{% else %}
-<p>No profile photo available.</p>
-{% endif %}
+<div class="personal_datas_container">
+    <div class="personal_data">
+        <span class="personal_data_number">{{ tickets_count }}</span>
+        <span>Tickets</span>
+    </div>
+    <div class="personal_data">
+        <span class="personal_data_number">{{ reviews_count }}</span>
+        <span>Reviews</span>
+    </div>
+    <div class="personal_data">
+        <span class="personal_data_number">{{ followers }}</span>
+        <span>Followers</span>
+    </div>
+    <div class="personal_data">
+        <span class="personal_data_number">{{ followings }}</span>
+        <span>Following</span>
+    </div>
+</div>
+
+<div class="page_title">
+    <h2>Most Prefered Books</h2>
+    <div class="ticket">
+        {% for book in prefered_books|slice:":5" %}
+            <img class="unreviewed_image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
+        {% endfor %}
+    </div>
+</div>
 
 <div class="page_title">
     <h2>Last Actions</h2>
+    <div class="ticket">
+        <ul>
+        {% for post in posts|slice:":5" %}
+            {% if post.content_type == 'TICKET' %}
+                <li>Ticket for {{ post.title }}</li>
+            {% elif post.content_type == 'REVIEW' %}
+                <li>Review for {{ post.ticket }}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
 </div>
-
-<div class="page_title">
-    <h2>Edit Account</h2>
-</div>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
 
 {% endblock content %}

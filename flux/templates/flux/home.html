@@ -75,9 +75,14 @@
                 <div class="ticket_content">
                     <div class="ticket_header">
                         <span class="title_ticket">{{ instance.ticket.title }}</span>
-                        <span class="user_ticket">{{ instance.ticket.time_created|date:"Y-m-d" }}"><a
-                                class="button_menu" href="{% url 'user' instance.ticket.user.id %}"><i
-                                class="fa-solid fa-user"></i> {{ instance.ticket.user }}</a></span>
+                        <span class="user_ticket">
+                            {{ instance.ticket.time_created|date:"Y-m-d" }}
+                            {% if request.user.profile_photo %}
+                                <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+                            {% endif %}
+                            <a class="button_menu" href="{% url 'user' instance.ticket.user.id %}">
+                            {{ instance.ticket.user }}</a>
+                        </span>
                     </div>
                     <p class="description_ticket">{{ instance.ticket.description }}</p>
                 </div>
@@ -92,14 +97,26 @@
 
     <div class="pagination">
         {% if page_obj.has_previous %}
-            <a class="button_page" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        <a class="button_page" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
         {% endif %}
 
-        <span  class="button_actual_page">{{ page_obj.number }}</span>
+        <span class="button_actual_page">{{ page_obj.number }}</span>
         {% if page_obj.has_next %}
-            <a class="button_page" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        <a class="button_page" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
         {% endif %}
     </div>
 
+</div>
+
+<h2 class="page_title">Unreviewed :</h2>
+<div class="unreviewed_container">
+    {% for unreview in unreviewed %}
+        <a href="{% url 'create_ticket_review' unreview.id %}">
+            <img class="unreviewed_image" src="{{ unreview.image.url }}" alt="{{ unreview.title }}">
+        </a>
+    {% endfor %}
+    {% if not unreviewed %}
+        <p>All tickets are reviewed !</p>
+    {% endif %}
 </div>
 {% endblock content %}

@@ -22,7 +22,9 @@
         </div>
 
         <div id="user_menu">
+            {% if request.user.profile_photo %}
             <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+            {% endif %}
             <a class="button_menu" href="{% url 'account' %}"> {{ request.user }}</a>
             <a class="button_menu" href="{% url 'logout' %}">Disconnect</a>
         </div>
