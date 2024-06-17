@@ -37,7 +37,7 @@
 </div>
 
 <div class="page_title">
-    <h2>Most Prefered Books</h2>
+    <h2>Favorite Books</h2>
     <div class="ticket">
         {% for book in prefered_books|slice:":5" %}
             <img class="unreviewed_image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
@@ -46,7 +46,7 @@
 </div>
 
 <div class="page_title">
-    <h2>Last Actions</h2>
+    <h2>Last Activity</h2>
     <div class="ticket">
         <ul>
         {% for post in posts|slice:":5" %}

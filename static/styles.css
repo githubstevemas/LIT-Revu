@@ -84,6 +84,19 @@ button,
     margin-right: 20px;
 }
 
+.search-field {
+    width: 300px;
+    height: 35px;
+    padding: 0 15px;
+    border: 1px solid #42494C;
+    outline: none;
+    font-size: 15px;
+}
+
+.search-field:focus {
+    border-color: #2F3437;
+}
+
 .pagination {
     margin-top: 30px;
     display: flex;
@@ -119,7 +132,8 @@ button,
     text-decoration: none;
     font-size: 17px;
     color: black;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .button_menu:hover {
@@ -192,8 +206,8 @@ button:hover,
     border: 1px solid grey;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     margin-right: 20px;
-    border-top-right-radius: 7px;
-    border-bottom-right-radius: 7px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
     position: relative;
 }
 
@@ -231,6 +245,7 @@ button:hover,
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     width: 700px;
     padding: 20px;
+    justify-content: space-between;
 }
 
 .unreviewed_image {
@@ -254,6 +269,24 @@ button:hover,
 .personal_data_number {
     font-weight: bold;
     font-size: 30px;
+}
+
+.top_user {
+    width: 120px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.top_users_container {
+    display: flex;
+    background-color: white;
+    border: 1px solid #BDBDB6;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    width: 700px;
+    padding: 20px;
+    margin: 20px;
+    justify-content: space-between;
 }
 
 #container_login {

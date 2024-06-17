@@ -6,17 +6,24 @@
 
 <h2 class="page_title">Search User</h2>
 <form method="get" action="">
-    <input type="text" name="q" placeholder="Search" value="username">
-    <button type="submit">Search</button>
+    <input type="text" name="q" class="search-field" placeholder="Search...">
+    <button type="submit"><i class="fa fa-search"></i></button>
 </form>
 
-<ul>
+{% if search_performed %}
     {% if results %}
-        {% for result in results %}
-            <li><a class="button_menu" href="{% url 'user' result.id %}"><i class="fa-solid fa-user"></i> {{ result.username }}</a></li>
-        {% endfor %}
+        <ul>
+            {% for result in results %}
+                <li>
+                    <a class="button_menu" href="{% url 'user' result.id %}">
+                        <i class="fa-solid fa-user"></i> {{ result.username }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No result.</p>
     {% endif %}
-</ul>
+{% endif %}
 
 <h2 class="page_title">Following</h2>
 <div class="ticket">

@@ -92,7 +92,7 @@
     {% endif %}
     {% endfor %}
     {% else %}
-    <p>No tickets</p>
+    <p>No posts here</p>
     {% endif %}
 
     <div class="pagination">
@@ -114,6 +114,19 @@
         <a href="{% url 'create_ticket_review' unreview.id %}">
             <img class="unreviewed_image" src="{{ unreview.image.url }}" alt="{{ unreview.title }}">
         </a>
+    {% endfor %}
+    {% if not unreviewed %}
+        <p>All tickets are reviewed !</p>
+    {% endif %}
+</div>
+
+<h2 class="page_title">Top Contributors :</h2>
+<div class="top_users_container">
+    {% for user, count in sorted_top_users|slice:":5" %}
+        <div class="top_user">
+            <span><a class="button_menu" href="">{{ user }}</a></span><br>
+            <span>{{ count }} reviews</span>
+        </div>
     {% endfor %}
     {% if not unreviewed %}
         <p>All tickets are reviewed !</p>

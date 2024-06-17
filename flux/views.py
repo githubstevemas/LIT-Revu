@@ -13,6 +13,20 @@ from authentication.forms import AccountForm
 
 @login_required()
 def home(request):
+    users = User.objects.all()
+    reviews = Review.objects.all()
+
+    top_users_list = {}
+
+    for user in users:
+        review_count = 0
+        for review in reviews:
+            if review.user == user:
+                review_count += 1
+        top_users_list[user.username] = review_count
+
+    sorted_top_users = sorted(top_users_list.items(), key=lambda item: item[1], reverse=True)
+
     followings = UserFollows.objects.filter(user=request.user).values_list('followed_user')
     tickets = Ticket.objects.filter(user__in=followings).annotate(content_type=Value('TICKET', CharField()))
     reviews = Review.objects.filter(user__in=followings).annotate(content_type=Value('REVIEW', CharField()))
@@ -29,7 +43,11 @@ def home(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'flux/home.html', {'page_obj': page_obj, 'unreviewed': unreviewed})
+    return render(request, 'flux/home.html', {
+        'page_obj': page_obj,
+        'unreviewed': unreviewed,
+        'sorted_top_users': sorted_top_users
+    })
 
 
 @login_required()
@@ -241,14 +259,19 @@ def subs(request):
     followings = UserFollows.objects.filter(user=user)
     followers = UserFollows.objects.filter(followed_user=user)
 
+    search_performed = False
+
     query = request.GET.get('q')
     results = None
+
     if query:
         results = User.objects.filter(username__icontains=query)
+        search_performed = True
 
     return render(request, 'flux/subscriptions.html', {
         'followings': followings,
         'followers': followers,
         'results': results,
-        'query': query
+        'query': query,
+        'search_performed': search_performed
     })
