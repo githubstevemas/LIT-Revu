@@ -16,6 +16,7 @@ urlpatterns = [
     path('signup/', authentication.views.signup_page, name='signup'),
     path('user/<int:user_id>/', flux.views.user_page, name='user'),
     path('subs/', flux.views.subs, name='subs'),
+    path('search/', flux.views.search, name='search'),
     path('own_posts/', flux.views.posts, name='own_posts'),
     path('create_review/', flux.views.create_review, name='create_review'),
     path('create_review/<int:ticket_id>/', flux.views.create_ticket_review, name='create_ticket_review'),

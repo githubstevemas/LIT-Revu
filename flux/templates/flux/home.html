@@ -14,95 +14,110 @@
 <h2 class="page_title">Recents Posts :</h2>
 <div class="ticket_container">
 
-
     {% if page_obj %}
-    {% for instance in page_obj %}
-    {% if instance.content_type == 'TICKET' %}
-    <div class="ticket">
-        <div>
-            <img class="ticket_image" src="{{ instance.image.url }}">
-        </div>
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ instance.title }}</span>
-                <span class="user_ticket">{{ instance.time_created|date:"Y-m-d" }}
-                            {% if instance.user == request.user %}
-                                <span>posted by you</span>
-                            {% else %}
-                                <a class="button_menu" href="{% url 'user' instance.user.id %}"><i
-                                        class="fa-solid fa-user"></i> {{ instance.user }}</a></span>
-                {% endif %}
-            </div>
-            <p class="description_ticket">{{ instance.description }}</p>
-            {% if not instance.reviewed %}
-            <div class="ticket_button">
-                <a class="button" href="{% url 'create_ticket_review' instance.id %}">Make review</a>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    {% elif instance.content_type == 'REVIEW' %}
-    <div class="review">
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ instance.ticket.title }}</span>
-                <span class="user_ticket">{{ instance.time_created|date:"Y-m-d" }}
-                        {% if instance.user == request.user %}
-                            <span>posted by you</span>
-                        {% else %}
-                            <a class="button_menu" href="{% url 'user' instance.user.id %}"><i
-                                    class="fa-solid fa-user"></i> {{ instance.user }}</a></span>
-                {% endif %}
-            </div>
-            <h3>{{ instance.headline }} -
-                {% for i in instance.rating|times %}
-                <i class="fa-solid fa-bookmark"></i>
-                {% endfor %}
-                {% for i in 5|times %}
-                {% if i >= instance.rating %}
-                <i class="fa-regular fa-bookmark"></i>
-                {% endif %}
-                {% endfor %}
-            </h3>
-
-            <p class="description_ticket">{{ instance.body }}</p>
-
-            <div class="reviewed_ticket">
-                <div>
-                    <img class="ticket_image" src="{{ instance.ticket.image.url }}">
-                </div>
-                <div class="ticket_content">
-                    <div class="ticket_header">
-                        <span class="title_ticket">{{ instance.ticket.title }}</span>
-                        <span class="user_ticket">
-                            {{ instance.ticket.time_created|date:"Y-m-d" }}
-                            {% if request.user.profile_photo %}
-                                <img class="profile_image" src="{{ request.user.profile_photo.url }}">
-                            {% endif %}
-                            <a class="button_menu" href="{% url 'user' instance.ticket.user.id %}">
-                            {{ instance.ticket.user }}</a>
-                        </span>
+        {% for instance in page_obj %}
+            {% if instance.content_type == 'TICKET' %}
+                <div class="ticket">
+                    <div class="ticket_image_wrapper">
+                        <img class="ticket_image" src="{{ instance.image.url }}">
                     </div>
-                    <p class="description_ticket">{{ instance.ticket.description }}</p>
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ instance.title }}</span>
+                            <span class="user_ticket">
+                                {% if instance.user == request.user %}
+                                    <span>Posted by you</span>
+                                {% else %}
+                                    {% if instance.user.profile_photo %}
+                                        <img class="profile_image" src="{{ instance.user.profile_photo.url }}">
+                                    {% endif %}
+                                    <a class="button_menu" href="{% url 'user' instance.user.id %}">
+                                {{ instance.user }}</a>
+                                {% endif %}
+                                {{ instance.time_created|time_ago }}
+                            </span>
+                        </div>
+                        <p class="description_ticket">{{ instance.description }}</p>
+                        {% if not instance.reviewed %}
+                            <div class="ticket_button">
+                                <a class="button" href="{% url 'create_ticket_review' instance.id %}">Make review</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
+
+            {% elif instance.content_type == 'REVIEW' %}
+                <div class="review">
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ instance.ticket.title }}</span>
+                            <span class="user_ticket">
+                                {% if instance.user == request.user %}
+                                    <span>Posted by you</span>
+                                {% else %}
+                                    {% if instance.user.profile_photo %}
+                                        <img class="profile_image" src="{{ instance.user.profile_photo.url }}">
+                                    {% endif %}
+                                    <a class="button_menu" href="{% url 'user' instance.user.id %}">
+                                {{ instance.user }}</a>
+                                {% endif %}
+                                {{ instance.time_created|time_ago }}
+                            </span>
+
+                        </div>
+                        <h3>{{ instance.headline }}
+                            <span class="bookmark_icon">
+                                {% for i in instance.rating|times %}
+                                    <i class="fa-solid fa-bookmark"></i>
+                                {% endfor %}
+                                {% for i in 5|times %}
+                                    {% if i >= instance.rating %}
+                                        <i class="fa-regular fa-bookmark"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </h3>
+
+                        <p class="description_ticket">{{ instance.body }}</p>
+
+                        <div class="reviewed_ticket">
+                            <div class="ticket_image_wrapper">
+                                <img class="ticket_image" src="{{ instance.ticket.image.url }}">
+                            </div>
+                            <div class="ticket_content">
+                                <div class="ticket_header">
+                                    <span class="user_ticket">
+                                        {% if instance.ticket.user == request.user %}
+                                            <span>Posted by you</span>
+                                        {% else %}
+                                            {% if instance.ticket.user.profile_photo %}
+                                                <img class="profile_image" src="{{ instance.ticket.user.profile_photo.url }}">
+                                            {% endif %}
+                                            <a class="button_menu" href="{% url 'user' instance.ticket.user.id %}">
+                                        {{ instance.ticket.user }}</a>
+                                        {% endif %}
+                                        {{ instance.ticket.time_created|time_ago }}
+                                    </span>
+                                </div>
+                                <p class="description_ticket">{{ instance.ticket.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
     {% else %}
-    <p>No posts here</p>
+        <p>No posts here</p>
     {% endif %}
 
     <div class="pagination">
         {% if page_obj.has_previous %}
-        <a class="button_page" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            <a class="button_page" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
         {% endif %}
 
         <span class="button_actual_page">{{ page_obj.number }}</span>
         {% if page_obj.has_next %}
-        <a class="button_page" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+            <a class="button_page" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
         {% endif %}
     </div>
 
@@ -112,7 +127,9 @@
 <div class="unreviewed_container">
     {% for unreview in unreviewed %}
         <a href="{% url 'create_ticket_review' unreview.id %}">
-            <img class="unreviewed_image" src="{{ unreview.image.url }}" alt="{{ unreview.title }}">
+            <div class="ticket_image_wrapper">
+                <img class="unreviewed_image" src="{{ unreview.image.url }}" alt="{{ unreview.title }}">
+            </div>
         </a>
     {% endfor %}
     {% if not unreviewed %}
@@ -122,14 +139,20 @@
 
 <h2 class="page_title">Top Contributors :</h2>
 <div class="top_users_container">
-    {% for user, count in sorted_top_users|slice:":5" %}
+    {% for item in sorted_top_users|slice:":5" %}
         <div class="top_user">
-            <span><a class="button_menu" href="">{{ user }}</a></span><br>
-            <span>{{ count }} reviews</span>
+            <a class="button_menu" href="{% url 'user' item.user.id %}">
+                {% if item.user.profile_photo %}
+                    <img class="top_profile_image" src="{{ item.user.profile_photo.url }}" alt="{{ item.user.username }}">
+                {% endif %}
+                    {{ item.user.username }}
+            </a>
+            <span>{{ item.count }} reviews</span>
         </div>
     {% endfor %}
     {% if not unreviewed %}
-        <p>All tickets are reviewed !</p>
+        <p>All tickets are reviewed!</p>
     {% endif %}
 </div>
+
 {% endblock content %}

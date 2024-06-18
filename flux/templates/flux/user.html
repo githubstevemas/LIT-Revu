@@ -5,20 +5,20 @@
 
 {% block content %}
 
-    <div class="page_title">
+    <div class="user_hero">
         {% if user.profile_photo %}
             <img class="large_profile_photo" src="{{ user.profile_photo.url }}" alt="Profile Photo">
         {% else %}
             <p>No profile photo available.</p>
         {% endif %}
-        <div>
-            <h1>{{ user.username }}</h1>
+        <div class="username_container">
+            <span class="user_name">{{ user.username }}</span>
             <form method="post">
                 {% csrf_token %}
                 {% if is_following %}
-                    <button type="submit" name="unfollow" class="button"><i class="fas fa-user-minus"></i></button>
+                    <button type="submit" name="unfollow"><i class="fas fa-user-minus"></i></button>
                 {% else %}
-                    <button type="submit" name="follow" class="button"><i class="fas fa-user-plus"></i></button>
+                    <button type="submit" name="follow"><i class="fas fa-user-plus"></i></button>
                 {% endif %}
             </form>
         </div>
@@ -46,7 +46,7 @@
 
     <div class="page_title">
         <h2>Favorite Books</h2>
-        <div class="ticket">
+        <div class="unreviewed_container">
             {% for book in prefered_books|slice:":5" %}
                 <img class="unreviewed_image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
             {% endfor %}

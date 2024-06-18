@@ -12,6 +12,7 @@
 
 {% if search_performed %}
     {% if results %}
+        <h2 class="page_title">Results</h2>
         <ul>
             {% for result in results %}
                 <li>
@@ -30,10 +31,20 @@
     <ul>
         {% for follow in followings %}
         <li>
-            <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
-                {{ follow.followed_user.username }}
-            </a>
-            <button type="submit" name="unfollow" class="follow_button"><i class="fas fa-user-plus"></i></button>
+            <div class="username_container">
+                <a class="button_menu" href="{% url 'user' follow.user.id %}">
+                    {{ follow.user.username }}
+                </a>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ follow.user.id }}">
+                    {% if follow.is_following %}
+                        <button type="submit" name="unfollow" class="button"><i class="fas fa-user-minus"></i></button>
+                    {% else %}
+                        <button type="submit" name="follow" class="button"><i class="fas fa-user-plus"></i></button>
+                    {% endif %}
+                </form>
+            </div>
         </li>
         {% empty %}
         <li>You are not following anyone :(</li>
@@ -46,9 +57,11 @@
     <ul>
         {% for follow in followers %}
         <li>
-            <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
-                {{ follow.user.username }}
-            </a>
+            <div class="username_container">
+                <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
+                    {{ follow.user.username }}
+                </a>
+            </div>
         </li>
         {% empty %}
         <li>You have no followers :(</li>

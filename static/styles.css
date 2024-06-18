@@ -3,8 +3,13 @@
     src: url(fonts/Espera.ttf);
 }
 
+@font-face {
+    font-family: Heavitas;
+    src: url(fonts/Heavitas.ttf);
+}
+
 body {
-    background-color: #FFFFF2;
+    background-color: #F7F7F7;
     font-family: Espera;
     display: flex;
     flex-direction: column;
@@ -20,7 +25,7 @@ header {
     display: flex;
     align-items: center;
     background-color: white;
-    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     margin: 0;
     padding: 0;
     z-index: 1000;
@@ -42,20 +47,30 @@ h2 {
     font-size: 32px;
 }
 
+.bookmark_icon {
+    color: #42494C;
+    margin-left: 7px;
+}
+
 .large_profile_photo {
     border-radius: 50%;
-    border: 2px solid rgba(66, 73, 76, 0.7);
     width: 150px;
     height: 150px;
 }
 
 .profile_image {
     border-radius: 50%;
-    border: 2px solid rgba(66, 73, 76, 0.7);
     width: 42px;
     height: 42px;
     object-fit: cover;
     margin-right: 5px;
+}
+
+.top_profile_image {
+    border-radius: 50%;
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
 }
 
 .ticket_profile_image {
@@ -66,18 +81,13 @@ h2 {
     margin-left: 10px;
 }
 
-.profile-photo-input ~ a,
-.profile-photo-input ~ p {
-    display: none;
-}
-
 button,
 .button {
     all: unset;
     background-color: #42494C;
-    border-radius: 18px;
+    border-radius: 8px;
     color: #F3F0E2;
-    padding: 9px;
+    padding: 7px;
     padding-left: 15px;
     padding-right: 15px;
     margin-left: 20px;
@@ -147,6 +157,13 @@ button:hover,
     cursor: pointer;
 }
 
+.user_hero {
+    background-color: white;
+    padding: 30px;
+    margin-bottom: 40px;
+    width: 900px;
+}
+
 .page_title {
     align-self: flex-start;
     margin-left: 25%;
@@ -165,10 +182,12 @@ button:hover,
 .reviewed_ticket {
     display: flex;
     flex-direction: row;
+    background-color: #FAFAF0;
     border: 1px solid #BDBDB6;
-    background-color: #FFFFF2;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.1);
     padding: 10px;
     width: 660px;
+    margin-bottom: 20px;
 }
 
 .block {
@@ -186,9 +205,9 @@ button:hover,
 .ticket {
     display: flex;
     flex-direction: row;
-    background-color: white;
-    border: 1px solid #BDBDB6;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    background-color: #EBEBE0;
+    border-top-right-radius: 28px;
+    border-bottom-left-radius: 18px;
     width: 700px;
     padding: 20px;
     margin: 20px;
@@ -200,15 +219,32 @@ button:hover,
     width: 100%;
 }
 
+.ticket_image_wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .ticket_image {
     width: 130px;
     height: auto;
     border: 1px solid grey;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.4);
     margin-right: 20px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     position: relative;
+}
+
+.ticket_image_wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: 97.5%;
+    box-shadow: inset 3px 0 3px -3px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
 }
 
 .ticket_header {
@@ -220,11 +256,15 @@ button:hover,
 }
 
 .title_ticket {
-    font-size: 20px;
+    font-size: 17px;
+    font-family: Heavitas;
 }
 
 .user_ticket {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .description_ticket {
@@ -242,18 +282,33 @@ button:hover,
     flex-direction: row;
     background-color: white;
     border: 1px solid #BDBDB6;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    width: 700px;
     padding: 20px;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .unreviewed_image {
     width: 100px;
     height: auto;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    margin-left: 15px;
-    margin-right: 15px;
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.3);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.unreviewed_image:hover {
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.unreviewed_image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: 98%;
+    box-shadow: inset 3px 0 3px -3px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
 }
 
 .personal_datas_container {
@@ -271,18 +326,29 @@ button:hover,
     font-size: 30px;
 }
 
+.username_container {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.user_name {
+    font-size: 60px;
+}
+
 .top_user {
     width: 120px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .top_users_container {
     display: flex;
     background-color: white;
     border: 1px solid #BDBDB6;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
     width: 700px;
     padding: 20px;
     margin: 20px;

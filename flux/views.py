@@ -2,7 +2,7 @@ from itertools import chain
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.db.models import CharField, Value
+from django.db.models import CharField, Value, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 
@@ -11,25 +11,28 @@ from flux.forms import TicketForm, ReviewForm, ReviewTicketForm, DeleteTicketFor
 from authentication.forms import AccountForm
 
 
-@login_required()
 def home(request):
     users = User.objects.all()
-    reviews = Review.objects.all()
+    total_reviews = Review.objects.all()
 
-    top_users_list = {}
+    top_users_list = []
 
     for user in users:
-        review_count = 0
-        for review in reviews:
-            if review.user == user:
-                review_count += 1
-        top_users_list[user.username] = review_count
+        review_count = total_reviews.filter(user=user).count()
+        top_users_list.append({
+            'user': user,
+            'count': review_count
+        })
 
-    sorted_top_users = sorted(top_users_list.items(), key=lambda item: item[1], reverse=True)
+    sorted_top_users = sorted(top_users_list, key=lambda item: item['count'], reverse=True)
 
     followings = UserFollows.objects.filter(user=request.user).values_list('followed_user')
-    tickets = Ticket.objects.filter(user__in=followings).annotate(content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.filter(user__in=followings).annotate(content_type=Value('REVIEW', CharField()))
+
+    tickets = Ticket.objects.filter(Q(user__in=followings) | Q(user=request.user)).annotate(
+        content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(
+        Q(user__in=followings) | Q(user=request.user) | Q(ticket__user=request.user)).annotate(
+        content_type=Value('REVIEW', CharField()))
 
     posts = sorted(
         chain(tickets, reviews),
@@ -44,15 +47,11 @@ def home(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'flux/home.html', {
+        'users': users,
         'page_obj': page_obj,
         'unreviewed': unreviewed,
-        'sorted_top_users': sorted_top_users
+        'sorted_top_users': sorted_top_users,
     })
-
-
-@login_required()
-def subs(request):
-    return render(request, 'flux/subscriptions.html')
 
 
 @login_required()
@@ -95,10 +94,21 @@ def account(request):
 
 @login_required()
 def posts(request):
-    tickets = Ticket.objects.all()
-    reviews = Review.objects.all()
+    tickets = Ticket.objects.filter(user=request.user).annotate(content_type=Value('TICKET', CharField()))
+    reviews = Review.objects.filter(user=request.user).annotate(content_type=Value('REVIEW', CharField()))
+
+    posts = sorted(
+        chain(tickets, reviews),
+        key=lambda post: post.time_created, reverse=True
+    )
+
+    paginator = Paginator(posts, 4)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'flux/own_posts.html',
-                  {'tickets': tickets, 'reviews': reviews})
+                  {'page_obj': page_obj})
 
 
 @login_required()
@@ -242,15 +252,16 @@ def user_page(request, user_id):
                 UserFollows.objects.filter(user=request.user, followed_user=user).delete()
         return redirect('user', user_id=user_id)
 
-    return render(request, 'flux/user.html', {'user': user,
-                                              'is_following': is_following,
-                                              'posts': posts,
-                                              'tickets_count': tickets_count,
-                                              'reviews_count': reviews_count,
-                                              'prefered_books': prefered_books,
-                                              'followings': followings,
-                                              'followers': followers
-                                              })
+    return render(request, 'flux/user.html', {
+        'user': user,
+        'is_following': is_following,
+        'posts': posts,
+        'tickets_count': tickets_count,
+        'reviews_count': reviews_count,
+        'prefered_books': prefered_books,
+        'followings': followings,
+        'followers': followers
+    })
 
 
 @login_required()
@@ -268,9 +279,49 @@ def subs(request):
         results = User.objects.filter(username__icontains=query)
         search_performed = True
 
+    if request.method == 'POST':
+        follow_user_id = request.POST.get('user_id')
+        follow_user = User.objects.get(id=follow_user_id)
+        is_following = UserFollows.objects.filter(user=request.user, followed_user=follow_user).exists()
+
+        if 'follow' in request.POST:
+            if not is_following:
+                follow = UserFollows(user=request.user, followed_user=follow_user)
+                follow.save()
+        elif 'unfollow' in request.POST:
+            if is_following:
+                UserFollows.objects.filter(user=request.user, followed_user=follow_user).delete()
+        return redirect('subs')
+
+    followings_with_status = [
+        {
+            'user': follow.followed_user,
+            'is_following': UserFollows.objects.filter(user=request.user, followed_user=follow.followed_user).exists()
+        }
+        for follow in followings
+    ]
+
     return render(request, 'flux/subscriptions.html', {
-        'followings': followings,
+        'followings': followings_with_status,
         'followers': followers,
+        'results': results,
+        'query': query,
+        'search_performed': search_performed
+    })
+
+
+@login_required()
+def search(request):
+    search_performed = False
+
+    query = request.GET.get('q')
+    results = None
+
+    if query:
+        results = Review.objects.filter(ticket__title__icontains=query)
+        search_performed = True
+
+    return render(request, 'flux/search.html', {
         'results': results,
         'query': query,
         'search_performed': search_performed

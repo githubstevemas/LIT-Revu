@@ -2,62 +2,113 @@
 
 {% load static %}
 
+{% load custom_tags %}
+
 {% block content %}
 
 <h2 class="page_title">Your Activity :</h2>
 
 <div class="ticket_container">
-    {% if tickets %}
+    {% if page_obj %}
+        {% for instance in page_obj %}
+            {% if instance.content_type == 'TICKET' %}
+                <div class="ticket">
+                    <div>
+                        <img class="ticket_image" src="{{ instance.image.url }}">
+                    </div>
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ instance.title }}</span>
+                            <span class="user_ticket">
+                                {% if instance.user == request.user %}
+                                    <span>posted by you</span>
+                                {% else %}
+                                    <a class="button_menu" href="{% url 'user' instance.user.id %}">
+                                        <i class="fa-solid fa-user"></i> {{ instance.user }}
+                                    </a>
+                                {% endif %}
+                                {{ instance.time_created|time_ago }}
+                            </span>
+                        </div>
+                        <p class="description_ticket">{{ instance.description }}</p>
+                        <div class="ticket_button">
+                            <a class="button" href="{% url 'edit_ticket' instance.id %}">Modify</a>
+                            <a class="button" href="{% url 'delete_ticket' instance.id %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% elif instance.content_type == 'REVIEW' %}
+                <div class="review">
+                    <div class="ticket_content">
+                        <div class="ticket_header">
+                            <span class="title_ticket">{{ instance.ticket.title }}</span>
+                            <span class="user_ticket">
+                                {% if instance.user == request.user %}
+                                    <span>posted by you</span>
+                                {% else %}
+                                    <a class="button_menu" href="{% url 'user' instance.user.id %}">
+                                        <i class="fa-solid fa-user"></i> {{ instance.user }}
+                                    </a>
+                                {% endif %}
+                                {{ instance.ticket.time_created|time_ago }}
+                            </span>
+                        </div>
+                        <h3>{{ instance.headline }}
+                            <span class="bookmark_icon">
+                                {% for i in instance.rating|times %}
+                                    <i class="fa-solid fa-bookmark"></i>
+                                {% endfor %}
+                                {% for i in 5|times %}
+                                    {% if i >= instance.rating %}
+                                        <i class="fa-regular fa-bookmark"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                        </h3>
 
-    {% for ticket in tickets %}
-    {% if ticket.user == user %}
+                        <p class="description_ticket">{{ instance.body }}</p>
 
+                        <div class="reviewed_ticket">
+                            <div>
+                                <img class="ticket_image" src="{{ instance.ticket.image.url }}">
+                            </div>
+                            <div class="ticket_content">
+                                <div class="ticket_header">
+                                    <span class="user_ticket">
+                                        {% if request.user.profile_photo %}
+                                            <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+                                        {% endif %}
+                                        <a class="button_menu" href="{% url 'user' instance.ticket.user.id %}">
+                                        {{ instance.ticket.user }}</a>
+                                        {{ instance.ticket.time_created|time_ago }}
+                                    </span>
+                                </div>
+                                <p class="description_ticket">{{ instance.ticket.description }}</p>
+                            </div>
+                        </div>
+                        <div class="ticket_button">
+                            <a class="button" href="{% url 'edit_review' instance.id %}">Modify</a>
+                            <a class="button" href="{% url 'delete_review' instance.id %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No posts here</p>
+    {% endif %}
 
-    <div class="ticket">
-        <div>
-            <img class="ticket_image" src="{{ ticket.image.url }}">
-        </div>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a class="button_page" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
 
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ ticket.title }}</span>
-                <span class="user_ticket">{{ ticket.time_created|date:"Y-m-d" }}</span>
-            </div>
-            <p class="description_ticket">{{ ticket.description }}</p>
-            <div class="ticket_button">
-                <a class="button" href="{% url 'edit_ticket' ticket.id %}">Modify</a>
-                <a class="button" href="{% url 'delete_ticket' ticket.id %}">Delete</a>
-            </div>
-        </div>
+        <span class="button_actual_page">{{ page_obj.number }}</span>
+        {% if page_obj.has_next %}
+            <a class="button_page" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% endif %}
     </div>
 
-    {% endif %}
-    {% endfor %}
-
-    {% for review in reviews %}
-    {% if review.user == user %}
-
-    <div class="review">
-        <div>
-            <img class="ticket_image" src="{{ review.ticket.image.url }}">
-        </div>
-
-        <div class="ticket_content">
-            <div class="ticket_header">
-                <span class="title_ticket">{{ review.ticket }}</span>
-                <span class="user_ticket">{{ review.time_created|date:"Y-m-d" }}</span>
-            </div>
-            <h3>{{ review.headline }} - {{ review.rating }}</h3>
-            <p class="description_ticket">{{ review.body }}</p>
-            <div class="ticket_button">
-                <a class="button" href="{% url 'edit_review' review.id %}">Modify</a>
-                <a class="button" href="{% url 'delete_review' review.id %}">Delete</a>
-            </div>
-        </div>
-    </div>
-
-    {% endif %}
-    {% endfor %}
-    {% endif %}
 </div>
+
 {% endblock content %}
