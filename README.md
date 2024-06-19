@@ -21,17 +21,22 @@ env/Scripts/activate
 *install all the depedencies :*
 ```
 pip install -r requirements.txt
-``` 
+```
+*make migrations :*
+```
+python manage.py makemigrations
+python manage.py migrate
+```
 *run the code :*
 ```
 python manage.py runserver
 ```
 *usage :*
 
-Navigate to http://127.0.0.1:8000 in your web browser.<br>
+Navigate to http://127.0.0.1:8000 in your web browser.<br><br><br>
 
 > [!NOTE]
 > The commands above are for Windows use. Go to the official [Python documentation](https://docs.python.org/3/tutorial/venv.html) for MacOS or Unix usage.
-
+<br><br>
 ## Contact
 Feel free to [mail me](mailto:mas.ste@gmail.com) for any questions, comments, or suggestions.
