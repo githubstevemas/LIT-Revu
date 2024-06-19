@@ -29,9 +29,15 @@ class Review(models.Model):
 
 class UserFollows(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='following', on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL,
+        related_name='following',
+        on_delete=models.CASCADE
+    )
     followed_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='followers', on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL,
+        related_name='followers',
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         unique_together = ('user', 'followed_user')

@@ -1,14 +1,14 @@
 {% extends 'base.html' %}}
 {% block content %}
 
-    <div id="container_login">
+    <div class="container_login">
         <div>
             <h2>Discover daily & read more</h2>
             <p>Get access to fresh books and help decide on the bestselling stories of tomorrow.</p>
         </div>
-        <div>
+        <div class="signup_form">
             <p>{{ message }}</p>
-            <form method="post">
+            <form class="form" method="post">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <button type="submit">Connect</button>

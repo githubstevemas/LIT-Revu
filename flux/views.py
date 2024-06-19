@@ -1,3 +1,4 @@
+
 from itertools import chain
 
 from django.contrib.auth import get_user_model
@@ -7,10 +8,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 
 from flux.models import Ticket, Review, UserFollows
-from flux.forms import TicketForm, ReviewForm, ReviewTicketForm, DeleteTicketForm
+from flux.forms import (TicketForm,
+                        ReviewForm,
+                        ReviewTicketForm,
+                        DeleteTicketForm)
 from authentication.forms import AccountForm
 
 
+@login_required()
 def home(request):
     users = User.objects.all()
     total_reviews = Review.objects.all()
@@ -24,15 +29,27 @@ def home(request):
             'count': review_count
         })
 
-    sorted_top_users = sorted(top_users_list, key=lambda item: item['count'], reverse=True)
+    sorted_top_users = sorted(
+        top_users_list,
+        key=lambda item: item['count'],
+        reverse=True
+    )
 
-    followings = UserFollows.objects.filter(user=request.user).values_list('followed_user')
+    followings = (UserFollows.objects.filter(
+        user=request.user).values_list('followed_user')
+                  )
 
-    tickets = Ticket.objects.filter(Q(user__in=followings) | Q(user=request.user)).annotate(
-        content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.filter(
-        Q(user__in=followings) | Q(user=request.user) | Q(ticket__user=request.user)).annotate(
-        content_type=Value('REVIEW', CharField()))
+    tickets = Ticket.objects.filter(
+        Q(user__in=followings) | Q(user=request.user)).annotate(
+        content_type=Value('TICKET', CharField())
+    )
+    reviews = (
+        Review.objects.filter(
+            Q(user__in=followings) |
+            Q(user=request.user) |
+            Q(ticket__user=request.user)
+        ).annotate(content_type=Value('REVIEW', CharField()))
+    )
 
     posts = sorted(
         chain(tickets, reviews),
@@ -56,15 +73,23 @@ def home(request):
 
 @login_required()
 def account(request):
-    tickets = Ticket.objects.filter(user=request.user).annotate(content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.filter(user=request.user).annotate(content_type=Value('REVIEW', CharField()))
+    tickets = (
+        Ticket.objects.filter(user=request.user)
+        .annotate(content_type=Value('TICKET', CharField()))
+    )
+    reviews = (
+        Review.objects.filter(user=request.user)
+        .annotate(content_type=Value('REVIEW', CharField()))
+    )
 
     posts = sorted(
         chain(tickets, reviews),
         key=lambda post: post.time_created, reverse=True
     )
 
-    prefered_books = Review.objects.filter(user=request.user).order_by('-rating')
+    prefered_books = (
+        Review.objects.filter(user=request.user).order_by('-rating')
+    )
 
     tickets_count = tickets.count()
     reviews_count = reviews.count()
@@ -78,7 +103,9 @@ def account(request):
             form.save()
             return redirect('home')
         else:
-            return render(request, 'flux/account.html', {'form': form})
+            return render(
+                request, 'flux/account.html', {'form': form}
+            )
     else:
         form = AccountForm(instance=request.user)
         return render(request, 'flux/account.html', {
@@ -94,8 +121,14 @@ def account(request):
 
 @login_required()
 def posts(request):
-    tickets = Ticket.objects.filter(user=request.user).annotate(content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.filter(user=request.user).annotate(content_type=Value('REVIEW', CharField()))
+    tickets = (
+        Ticket.objects.filter(user=request.user)
+        .annotate(content_type=Value('TICKET', CharField()))
+    )
+    reviews = (
+        Review.objects.filter(user=request.user)
+        .annotate(content_type=Value('REVIEW', CharField()))
+    )
 
     posts = sorted(
         chain(tickets, reviews),
@@ -111,38 +144,56 @@ def posts(request):
                   {'page_obj': page_obj})
 
 
-@login_required()
 def create_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
             ticket = form.save(commit=False)
-            photo = form.save(commit=False)
-            photo.uploader = request.user
             ticket.user = request.user
-            form.save()
+            ticket.save()
             return redirect('home')
         else:
-            return render(request, 'flux/create_ticket.html', {'form': form})
+            return render(
+                request, 'flux/create_ticket.html', {'form': form}
+            )
     else:
         form = TicketForm()
-        return render(request, 'flux/create_ticket.html', {'form': form})
+    return render(
+        request, 'flux/create_ticket.html', {'form': form}
+    )
 
 
-@login_required()
+@login_required
 def create_review(request):
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
+        ticket_form = TicketForm(request.POST, request.FILES)
+        review_form = ReviewForm(request.POST)
+        if ticket_form.is_valid() and review_form.is_valid():
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
+
+            review = review_form.save(commit=False)
+            review.ticket = ticket
             review.user = request.user
-            form.save()
+            review.save()
+
+            ticket.reviewed = True
+            ticket.save()
+
             return redirect('home')
         else:
-            return render(request, 'flux/create_review.html', {'form': form})
+            return render(request, 'flux/create_review.html', {
+                'ticket_form': ticket_form,
+                'review_form': review_form
+            })
     else:
-        form = ReviewForm()
-        return render(request, 'flux/create_review.html', {'form': form})
+        ticket_form = TicketForm()
+        review_form = ReviewForm()
+        return render(request, 'flux/create_review.html', {
+            'ticket_form': ticket_form,
+            'review_form': review_form
+        })
 
 
 @login_required()
@@ -159,10 +210,16 @@ def create_ticket_review(request, ticket_id):
             ticket.save()
             return redirect('home')
         else:
-            return render(request, 'flux/create_ticket_review.html', {'form': form, 'ticket': ticket})
+            return render(
+                request, 'flux/create_ticket_review.html',
+                {'form': form, 'ticket': ticket}
+            )
     else:
         form = ReviewTicketForm()
-        return render(request, 'flux/create_ticket_review.html', {'form': form, 'ticket': ticket})
+        return render(
+            request, 'flux/create_ticket_review.html',
+            {'form': form, 'ticket': ticket}
+        )
 
 
 @login_required
@@ -175,7 +232,10 @@ def edit_ticket(request, ticket_id):
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
-    return render(request, 'flux/edit_ticket.html', context={'edit_form': edit_form})
+    return render(
+        request, 'flux/edit_ticket.html',
+        context={'edit_form': edit_form}
+    )
 
 
 @login_required
@@ -188,7 +248,10 @@ def edit_review(request, review_id):
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
-    return render(request, 'flux/edit_review.html', context={'edit_form': edit_form})
+    return render(
+        request, 'flux/edit_review.html',
+        context={'edit_form': edit_form}
+    )
 
 
 @login_required
@@ -201,7 +264,10 @@ def delete_ticket(request, ticket_id):
             if delete_form.is_valid():
                 ticket.delete()
                 return redirect('home')
-    return render(request, 'flux/delete_ticket.html', context={'delete_form': delete_form, 'ticket': ticket})
+    return render(request, 'flux/delete_ticket.html', context={
+        'delete_form': delete_form,
+        'ticket': ticket
+    })
 
 
 @login_required
@@ -214,7 +280,10 @@ def delete_review(request, review_id):
             if delete_form.is_valid():
                 review.delete()
                 return redirect('home')
-    return render(request, 'flux/delete_review.html', context={'delete_form': delete_form, 'review': review})
+    return render(request, 'flux/delete_review.html', context={
+        'delete_form': delete_form,
+        'review': review
+    })
 
 
 User = get_user_model()
@@ -224,8 +293,15 @@ User = get_user_model()
 def user_page(request, user_id):
     user = get_object_or_404(User, id=user_id)
 
-    tickets = Ticket.objects.filter(user=user).annotate(content_type=Value('TICKET', CharField()))
-    reviews = Review.objects.filter(user=user).annotate(content_type=Value('REVIEW', CharField()))
+    tickets = (
+        Ticket.objects.filter(user=user)
+        .annotate(content_type=Value('TICKET', CharField()))
+    )
+
+    reviews = (
+        Review.objects.filter(user=user)
+        .annotate(content_type=Value('REVIEW', CharField()))
+    )
 
     posts = sorted(
         chain(tickets, reviews),
@@ -240,7 +316,9 @@ def user_page(request, user_id):
     followings = UserFollows.objects.filter(user=user).count
     followers = UserFollows.objects.filter(followed_user=user).count
 
-    is_following = UserFollows.objects.filter(user=request.user, followed_user=user).exists()
+    is_following = UserFollows.objects.filter(
+        user=request.user, followed_user=user
+    ).exists()
 
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -249,7 +327,9 @@ def user_page(request, user_id):
                 follow.save()
         elif 'unfollow' in request.POST:
             if is_following:
-                UserFollows.objects.filter(user=request.user, followed_user=user).delete()
+                UserFollows.objects.filter(
+                    user=request.user, followed_user=user
+                ).delete()
         return redirect('user', user_id=user_id)
 
     return render(request, 'flux/user.html', {
@@ -282,21 +362,29 @@ def subs(request):
     if request.method == 'POST':
         follow_user_id = request.POST.get('user_id')
         follow_user = User.objects.get(id=follow_user_id)
-        is_following = UserFollows.objects.filter(user=request.user, followed_user=follow_user).exists()
+        is_following = UserFollows.objects.filter(
+            user=request.user, followed_user=follow_user
+        ).exists()
 
         if 'follow' in request.POST:
             if not is_following:
-                follow = UserFollows(user=request.user, followed_user=follow_user)
+                follow = UserFollows(
+                    user=request.user, followed_user=follow_user
+                )
                 follow.save()
         elif 'unfollow' in request.POST:
             if is_following:
-                UserFollows.objects.filter(user=request.user, followed_user=follow_user).delete()
+                UserFollows.objects.filter(
+                    user=request.user, followed_user=follow_user
+                ).delete()
         return redirect('subs')
 
     followings_with_status = [
         {
             'user': follow.followed_user,
-            'is_following': UserFollows.objects.filter(user=request.user, followed_user=follow.followed_user).exists()
+            'is_following': UserFollows.objects.filter(
+                user=request.user, followed_user=follow.followed_user
+            ).exists()
         }
         for follow in followings
     ]

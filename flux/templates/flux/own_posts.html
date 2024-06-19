@@ -13,7 +13,7 @@
         {% for instance in page_obj %}
             {% if instance.content_type == 'TICKET' %}
                 <div class="ticket">
-                    <div>
+                    <div class="ticket_image_wrapper">
                         <img class="ticket_image" src="{{ instance.image.url }}">
                     </div>
                     <div class="ticket_content">
@@ -69,14 +69,14 @@
                         <p class="description_ticket">{{ instance.body }}</p>
 
                         <div class="reviewed_ticket">
-                            <div>
+                            <div class="ticket_image_wrapper">
                                 <img class="ticket_image" src="{{ instance.ticket.image.url }}">
                             </div>
                             <div class="ticket_content">
                                 <div class="ticket_header">
                                     <span class="user_ticket">
                                         {% if request.user.profile_photo %}
-                                            <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+                                            <img class="profile_image" src="{{ instance.ticket.user.profile_photo.url }}">
                                         {% endif %}
                                         <a class="button_menu" href="{% url 'user' instance.ticket.user.id %}">
                                         {{ instance.ticket.user }}</a>

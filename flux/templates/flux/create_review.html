@@ -5,10 +5,42 @@
 {% block content %}
 
 <h2 class="page_title">Create Review</h2>
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input class="button" type="submit" value="Send">
-</form>
+
+<form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ ticket_form.edit_ticket }}
+
+            <h3>Ticket</h3>
+            <div class="form-group">
+                {{ ticket_form.title.label_tag }}
+                {{ ticket_form.title }}
+            </div>
+            <div class="form-group">
+                {{ ticket_form.description.label_tag }}
+                {{ ticket_form.description }}
+            </div>
+            <div class="form-group">
+                {{ ticket_form.image.label_tag }}
+                {{ ticket_form.image }}
+            </div>
+
+            <br>
+
+            <h3>Review</h3>
+            <div class="form-group">
+                {{ review_form.rating.label_tag }}
+                {{ review_form.rating }}
+            </div>
+            <div class="form-group">
+                {{ review_form.headline.label_tag }}
+                {{ review_form.headline }}
+            </div>
+            <div class="form-group">
+                {{ review_form.body.label_tag }}
+                {{ review_form.body }}
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
 
 {% endblock content %}

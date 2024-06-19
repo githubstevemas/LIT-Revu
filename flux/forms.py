@@ -11,43 +11,48 @@ class TicketForm(forms.ModelForm):
         model = Ticket
         fields = ['title', 'description', 'image']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget.attrs.update(
+            {'class': 'form-description'}
+        )
+
 
 class ReviewForm(forms.ModelForm):
-    RATING_CHOICES = [
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-    ]
+    RATING_CHOICES = [(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]
 
     rating = forms.ChoiceField(
         choices=RATING_CHOICES,
-        widget=forms.RadioSelect
-    )
-
-    class Meta:
-        model = Review
-        fields = ['ticket', 'rating', 'headline', 'body']
-
-
-class ReviewTicketForm(forms.ModelForm):
-    RATING_CHOICES = [
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
-    ]
-
-    rating = forms.ChoiceField(
-        choices=RATING_CHOICES,
-        widget=forms.RadioSelect
+        widget=forms.RadioSelect(attrs={'class': 'rating-inline'})
     )
 
     class Meta:
         model = Review
         fields = ['rating', 'headline', 'body']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['headline'].widget.attrs.update({'class': 'form-control'})
+        self.fields['body'].widget.attrs.update({'class': 'form-description'})
+
+
+class ReviewTicketForm(forms.ModelForm):
+    RATING_CHOICES = [(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'),]
+
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES,
+        widget=forms.RadioSelect(attrs={'class': 'rating-inline'})
+    )
+
+    class Meta:
+        model = Review
+        fields = ['rating', 'headline', 'body']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['headline'].widget.attrs.update({'class': 'form-control'})
+        self.fields['body'].widget.attrs.update({'class': 'form-description'})
 
 
 class DeleteTicketForm(forms.Form):
@@ -64,4 +69,3 @@ class FollowUserForm(forms.ModelForm):
         widgets = {
             'followed_user': forms.Select(attrs={'class': 'form-control'}),
         }
-

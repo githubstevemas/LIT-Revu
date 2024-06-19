@@ -12,12 +12,10 @@
 
 {% if search_performed %}
     {% if results %}
-        <h2 class="page_title">Results</h2>
         <ul>
             {% for result in results %}
                 <li>
-                    <a class="button_menu" href="{% url 'user' result.id %}">
-                        <i class="fa-solid fa-user"></i> {{ result.username }}</a>
+                    <a class="button_menu" href="{% url 'user' result.id %}">{{ result.username }}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -58,7 +56,7 @@
         {% for follow in followers %}
         <li>
             <div class="username_container">
-                <a class="button_menu" href="{% url 'user' follow.followed_user.id %}">
+                <a class="button_menu" href="{% url 'user' follow.user.id %}">
                     {{ follow.user.username }}
                 </a>
             </div>
