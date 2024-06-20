@@ -1,5 +1,6 @@
 from django.contrib import admin
-from flux.models import Review, Ticket, UserFollows
+from post.models import Review, Ticket
+from accounts.models import UserFollows
 
 admin.site.register(Review)
 admin.site.register(Ticket)

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'litrevu',
     'authentication',
     'flux',
+    'accounts',
+    'post',
 ]
 
 MIDDLEWARE = [
