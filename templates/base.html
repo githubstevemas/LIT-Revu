@@ -11,23 +11,28 @@
 
 <header>
 
-    <span id="title"><a class="link_home" href="{% url 'home' %}">LITRevu</a></span>
+    <span id="title">
+        <a class="link-home" href="{% url 'home' %}">
+            <img class="logo" src="/static/images/logo.png" alt="litrevu logo">
+            LITRevu
+        </a>
+    </span>
 
     {% if user.is_authenticated %}
 
-        <div id="menu_header">
-            <a class="button_menu" href="{% url 'home' %}">Flux</a>
-            <a class="button_menu" href="{% url 'own_posts' %}">Posts</a>
-            <a class="button_menu" href="{% url 'subs' %}">Subscriptions</a>
-            <a class="button_menu" href="{% url 'search' %}">Search</a>
+        <div id="menu-header">
+            <a class="button-menu" href="{% url 'home' %}">Flux</a>
+            <a class="button-menu" href="{% url 'own_posts' %}">Posts</a>
+            <a class="button-menu" href="{% url 'subs' %}">Subscriptions</a>
+            <a class="button-menu" href="{% url 'search' %}">Search</a>
         </div>
 
-        <div id="user_menu">
+        <div id="user-menu">
             {% if request.user.profile_photo %}
-            <img class="profile_image" src="{{ request.user.profile_photo.url }}">
+            <img class="profile-image" src="{{ request.user.profile_photo.url }}" alt="{{ request.user.username }}">
             {% endif %}
-            <a class="button_menu" href="{% url 'account' %}"> {{ request.user }}</a>
-            <a class="button_menu" href="{% url 'logout' %}">Disconnect</a>
+            <a class="button-menu" href="{% url 'account' %}"> {{ request.user }}</a>
+            <a class="button-menu" href="{% url 'logout' %}">Disconnect</a>
         </div>
 
     {% endif %}
@@ -42,12 +47,7 @@
 
 <footer>
     <div>
-        © LITRevu - 2024
-    </div>
-    <div>
-        <a class="button_menu" href="">About</a>
-        <a class="button_menu" href="">Terms</a>
-        <a class="button_menu" href="">Privacy</a>
+        © 2024 LITRevu - All rights reserved
     </div>
 </footer>
 </body>

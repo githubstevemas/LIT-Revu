@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<h2 class="page_title">Delete "{{ review.ticket.title }}" review ?</h2>
+<h2 class="page-title">Delete "{{ review.ticket.title }}" review ?</h2>
 <form method="post">
     {% csrf_token %}
     {{ delete_form.as_p }}
-    <button type="submit" name="delete_review">Confirm</button>
+    <button type="submit" name="delete-review">Confirm</button>
 </form>
 
 {% endblock content %}

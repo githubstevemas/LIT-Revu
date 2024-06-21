@@ -43,4 +43,8 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['profile_photo']
+        fields = ['profile_photo', 'bio']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bio'].widget.attrs.update({'class': 'form-description'})

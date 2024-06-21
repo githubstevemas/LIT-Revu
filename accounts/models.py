@@ -3,6 +3,8 @@ from django.db import models
 
 
 class UserFollows(models.Model):
+    """ Represents a relation between users in database """
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='following',

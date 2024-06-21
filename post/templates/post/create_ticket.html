@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h2 class="page_title">Create ticket</h2>
+<h2 class="page-title">Create ticket</h2>
 <form class="form" action="" method="post" novalidate enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.edit_ticket }}
@@ -20,7 +20,7 @@
         {{ form.image.label_tag }}
         {{ form.image }}
     </div>
-    <div class="signup_button">
+    <div class="signup-button">
         <input class="button" type="submit" value="Send">
     </div>
 </form>

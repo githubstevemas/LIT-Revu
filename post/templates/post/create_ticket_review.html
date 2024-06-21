@@ -6,29 +6,29 @@
 
 {% block content %}
 
-<h2 class="page_title">Create Review For :</h2>
+<h2 class="page-title">Create Review For :</h2>
 
 <div class="ticket">
             <div>
-                <img class="ticket_image" src="{{ ticket.image.url }}">
+                <img class="ticket-image" src="{{ ticket.image.url }}">
             </div>
-            <div class="ticket_content">
-                <div class="ticket_header">
-                    <span class="title_ticket">{{ ticket.title }}</span>
-                    <span class="user_ticket">
+            <div class="ticket-content">
+                <div class="ticket-header">
+                    <span class="title-ticket">{{ ticket.title }}</span>
+                    <span class="user-ticket">
                         {% if ticket.user == request.user %}
                             <span>Posted by you</span>
                         {% else %}
                             {% if ticket.user.profile_photo %}
-                                <img class="profile_image" src="{{ ticket.user.profile_photo.url }}">
+                                <img class="profile-image" src="{{ ticket.user.profile_photo.url }}">
                             {% endif %}
-                            <a class="button_menu" href="{% url 'user' ticket.user.id %}">
+                            <a class="button-menu" href="{% url 'user' ticket.user.id %}">
                         {{ ticket.user }}</a>
                         {% endif %}
                         {{ ticket.time_created|time_ago }}
                     </span>
                 </div>
-                <p class="description_ticket">{{ ticket.description }}</p>
+                <p class="description-ticket">{{ ticket.description }}</p>
             </div>
 </div>
 
@@ -46,7 +46,7 @@
         {{ form.body.label_tag }}
         {{ form.body }}
     </div>
-    <div class="signup_button">
+    <div class="signup-button">
         <input class="button" type="submit" value="Send">
     </div>
 </form>

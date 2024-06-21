@@ -70,7 +70,7 @@ def home(request):
 
 
 @login_required()
-def posts(request):
+def own_posts(request):
     tickets = (
         Ticket.objects.filter(user=request.user)
         .annotate(content_type=Value('TICKET', CharField()))

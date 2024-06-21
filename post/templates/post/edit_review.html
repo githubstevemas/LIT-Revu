@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2 class="page_title">Edit Review</h2>
+<h2 class="page-title">Edit Review</h2>
 
 <form class="form" action="" method="post" novalidate enctype="multipart/form-data">
     {% csrf_token %}
@@ -22,7 +22,7 @@
         {{ edit_form.body.label_tag }}
         {{ edit_form.body }}
     </div>
-    <div class="signup_button">
+    <div class="signup-button">
         <input class="button" type="submit" value="Send">
     </div>
 </form>

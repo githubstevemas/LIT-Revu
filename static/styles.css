@@ -8,12 +8,18 @@
     src: url(fonts/Heavitas.ttf);
 }
 
+html {
+    overflow-y: scroll;
+    margin: 0;
+}
+
 body {
     background-color: #F7F7F7;
     font-family: Espera;
     display: flex;
     flex-direction: column;
     min-height: 95vh;
+    margin: 0;
 }
 
 header {
@@ -25,22 +31,16 @@ header {
     display: flex;
     align-items: center;
     background-color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    margin: 0;
-    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
 
 footer {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
-    margin-bottom: 50px;
-}
-
-h1 {
-    font-size: 52px;
+    width: 100%;
+    height: 130px;
 }
 
 h2 {
@@ -48,9 +48,18 @@ h2 {
     font-size: 32px;
 }
 
-.link_home {
+ul {
+    list-style-type: none;
+}
+
+.link-home {
     text-decoration: none;
     color: black;
+}
+
+.logo {
+    width: 35px;
+    height: auto;
 }
 
 .form {
@@ -82,7 +91,7 @@ h2 {
 }
 
 .form-description {
-    width: 500px;
+    width: 450px;
     padding: 5px;
     border: 1px solid #42494C;
     outline: none;
@@ -94,18 +103,31 @@ h2 {
     margin-top: 10px;
 }
 
-.bookmark_icon {
-    color: #42494C;
+.bio {
+    background-color: #EBEBEB;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border: 4px solid #F7F7F7;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    padding: 15px;
+    width: 400px;
+    height: 100px;
+}
+
+.bookmark-icon {
+    color: #687378;
     margin-left: 7px;
 }
 
-.large_profile_photo {
+.large-profile-photo {
     border-radius: 50%;
     width: 150px;
     height: 150px;
 }
 
-.profile_image {
+.profile-image {
     border-radius: 50%;
     width: 42px;
     height: 42px;
@@ -113,14 +135,16 @@ h2 {
     margin-right: 5px;
 }
 
-.top_profile_image {
+.top-profile-image {
     border-radius: 50%;
+    border: 4px solid #F7F7F7;
+    box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.1);
     width: 72px;
     height: 72px;
     object-fit: cover;
 }
 
-.ticket_profile_image {
+.ticket-profile-image {
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -131,9 +155,9 @@ h2 {
 button,
 .button {
     all: unset;
-    background-color: #42494C;
+    background-color: #6D767B;
     border-radius: 8px;
-    color: #F3F0E2;
+    color: white;
     padding: 7px;
     padding-left: 15px;
     padding-right: 15px;
@@ -161,9 +185,9 @@ button,
     align-items: center;
 }
 
-.button_actual_page {
+.button-actual-page {
     background-color: #F7F7F7;
-    border: 2px solid #42494C;
+    border: 2px solid #687378;
     border-radius: 8px;
     text-align: center;
     color: #42494C;
@@ -173,9 +197,9 @@ button,
     margin: 10px;
 }
 
-.button_page {
+.button-page {
     text-decoration: none;
-    background-color: #42494C;
+    background-color: #687378;
     border-radius: 8px;
     text-align: center;
     font-size: 17px;
@@ -185,32 +209,33 @@ button,
     margin: 10px;
 }
 
-.button_menu {
+.button-menu {
+    position: relative;
     text-decoration: none;
     font-size: 17px;
-    color: black;
+    color: #42494D;
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.button_menu:hover {
-    color: grey;
+.button-menu:hover {
+    color: black;
 }
 
-.button_page:hover,
+.button-page:hover,
 button:hover,
 .button:hover {
-    background-color: #2F3437;
+    background-color: #4B5358;
     cursor: pointer;
 }
 
-.user_hero {
+.user-hero {
     padding: 30px;
     margin-bottom: 40px;
     width: 900px;
 }
 
-.page_title {
+.page-title {
     align-self: flex-start;
     margin-left: 25%;
 }
@@ -225,7 +250,7 @@ button:hover,
     margin-bottom: 120px;
 }
 
-.reviewed_ticket {
+.reviewed-ticket {
     display: flex;
     flex-direction: row;
     background-color: #EBEBEB;
@@ -241,7 +266,7 @@ button:hover,
     justify-content: center;
 }
 
-.ticket_container{
+.ticket-container {
     display: flex;
     flex-direction: column;
     width: 800px;
@@ -259,13 +284,24 @@ button:hover,
     margin: 20px;
 }
 
-.ticket_content {
+.followers-container {
+    display: flex;
+    flex-direction: row;
+    background-color: #EBEBE0;
+    border-top-right-radius: 28px;
+    border-bottom-left-radius: 18px;
+    width: 550px;
+    padding: 20px;
+    margin: 20px;
+}
+
+.ticket-content {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.ticket_image {
+.ticket-image {
     width: auto;
     height: 200px;
     border: 1px solid grey;
@@ -276,12 +312,12 @@ button:hover,
     position: relative;
 }
 
-.ticket_image_wrapper {
+.ticket-image-wrapper {
     position: relative;
     display: inline-block;
 }
 
-.ticket_image_wrapper::after {
+.ticket-image-wrapper::after {
     content: '';
     position: absolute;
     top: 0;
@@ -293,7 +329,7 @@ button:hover,
     pointer-events: none;
 }
 
-.ticket_header {
+.ticket-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,29 +337,33 @@ button:hover,
     margin-top: 10px;
 }
 
-.title_ticket {
+.title-ticket {
     font-size: 17px;
     font-family: Heavitas;
 }
 
-.user_ticket {
+.user-ticket {
     margin-left: auto;
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.description_ticket {
+.description-ticket {
     margin: 30px;
 }
 
-.ticket_button {
+.ticket-button {
     margin-top: 20px;
     margin-bottom: 20px;
     margin-left: auto;
 }
 
-.unreviewed_container {
+#favorite-container {
+    gap: 20px;
+}
+
+.unreviewed-container {
     display: flex;
     flex-direction: row;
     background-color: #EBEBE0;
@@ -334,7 +374,7 @@ button:hover,
     gap: 20px;
 }
 
-.unreviewed_image {
+.unreviewed-image {
     width: 100px;
     height: auto;
     box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -342,11 +382,11 @@ button:hover,
     border-bottom-right-radius: 8px;
 }
 
-.unreviewed_image:hover {
+.unreviewed-image:hover {
     box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.unreviewed_image::after {
+.unreviewed-image::after {
     content: '';
     position: absolute;
     top: 0;
@@ -358,36 +398,55 @@ button:hover,
     pointer-events: none;
 }
 
-.personal_datas_container {
+.personal-datas-container {
     background-color: #EBEBE0;
     border-top-right-radius: 28px;
     border-bottom-left-radius: 18px;
     display: flex;
-    padding: 50px;
-    gap: 75px;
+    padding: 30px;
+    gap: 65px;
 }
 
-.personal_data {
-    display: grid;
-    justify-items: center;
+.personal-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 4px solid #F7F7F7;
 }
 
-.personal_data_number {
+.personal-data-number {
     font-weight: bold;
     font-size: 30px;
 }
 
-.username_container {
+.profile-container {
     display: flex;
     margin-bottom: 10px;
     align-items: center;
 }
 
-.user_name {
+.username-container {
+    display: flex;
+    width: 480px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-result {
+    width: 420px;
+    margin-top: 40px;
+}
+
+.user-name {
     font-size: 60px;
 }
 
-.top_user {
+.top-user {
     width: 120px;
     display: flex;
     flex-direction: column;
@@ -396,7 +455,7 @@ button:hover,
     text-align: center;
 }
 
-.top_users_container {
+.top-users-container {
     display: flex;
     background-color: #EBEBE0;
     border-top-right-radius: 28px;
@@ -407,7 +466,7 @@ button:hover,
     justify-content: space-between;
 }
 
-.container_login {
+.container-login {
     display: flex;
     gap: 40px;
     position: absolute;
@@ -418,26 +477,33 @@ button:hover,
     align-items: center;
 }
 
-.signup_form {
+.signup-form {
     margin-top: 70px;
 }
 
-.signup_button {
+.signup-button {
     margin-top: 20px;
 }
 
 #title {
+    display: flex;
+    align-items: center;
     margin-left: 200px;
     font-size: 38px;
 }
 
-#user_menu {
+#user-menu {
     display: flex;
     align-items: center;
     position: absolute;
     right: 200px;
 }
 
-#menu_header {
-    margin-left: 130px;
+.user-hero {
+    display: flex;
+    gap: 40px;
+}
+
+#menu-header {
+    margin-left: 90px;
 }

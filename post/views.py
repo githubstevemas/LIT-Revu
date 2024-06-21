@@ -89,7 +89,7 @@ def edit_ticket(request, ticket_id):
     edit_form = TicketForm(instance=ticket)
     if request.method == 'POST':
         if 'edit_ticket' in request.POST:
-            edit_form = TicketForm(request.POST, instance=ticket)
+            edit_form = TicketForm(request.POST, request.FILES, instance=ticket)
             if edit_form.is_valid():
                 edit_form.save()
                 return redirect('home')
@@ -102,17 +102,15 @@ def edit_ticket(request, ticket_id):
 @login_required
 def edit_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
-    edit_form = ReviewForm(instance=review)
     if request.method == 'POST':
-        if 'edit_review' in request.POST:
-            edit_form = ReviewForm(request.POST, instance=review)
-            if edit_form.is_valid():
-                edit_form.save()
-                return redirect('home')
-    return render(
-        request, 'post/edit_review.html',
-        context={'edit_form': edit_form}
-    )
+        edit_form = ReviewForm(request.POST, request.FILES, instance=review)
+        if edit_form.is_valid():
+            edit_form.save()
+            return redirect('home')
+    else:
+        edit_form = ReviewForm(instance=review)
+
+    return render(request, 'post/edit_review.html', context={'edit_form': edit_form})
 
 
 @login_required

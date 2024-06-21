@@ -4,38 +4,40 @@
 
 {% block content %}
 
-<h2 class="page_title">Search User</h2>
+<h1 class="page-title">Search User</h1>
 <form method="get" action="">
     <input type="text" name="q" class="search-field" placeholder="Search...">
     <button type="submit"><i class="fa fa-search"></i></button>
 </form>
 
-{% if search_performed %}
-    {% if results %}
-        <ul>
-            {% for result in results %}
-                <li>
-                    <a class="button_menu" href="{% url 'user' result.id %}">{{ result.username }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No result.</p>
+<div class="user-result">
+    {% if search_performed %}
+        {% if results %}
+            <ul>
+                {% for result in results %}
+                    <li>
+                        <a class="button-menu" href="{% url 'user' result.id %}">{{ result.username }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No result.</p>
+        {% endif %}
     {% endif %}
-{% endif %}
+</div>
 
-<h2 class="page_title">Following</h2>
-<div class="ticket">
+<h2 class="page-title">Following</h2>
+<div class="followers-container">
     <ul>
         {% for follow in followings %}
         <li>
-            <div class="username_container">
-                <a class="button_menu" href="{% url 'user' follow.user.id %}">
+            <div class="username-container">
+                <a class="button-menu" href="{% url 'user' follow.user.id %}">
                     {{ follow.user.username }}
                 </a>
                 <form method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="user_id" value="{{ follow.user.id }}">
+                    <input type="hidden" name="user-id" value="{{ follow.user.id }}">
                     {% if follow.is_following %}
                         <button type="submit" name="unfollow" class="button"><i class="fas fa-user-minus"></i></button>
                     {% else %}
@@ -50,13 +52,13 @@
     </ul>
 </div>
 
-<h2 class="page_title">Followers</h2>
-<div class="ticket">
+<h2 class="page-title">Followers</h2>
+<div class="followers-container">
     <ul>
         {% for follow in followers %}
         <li>
-            <div class="username_container">
-                <a class="button_menu" href="{% url 'user' follow.user.id %}">
+            <div class="username-container">
+                <a class="button-menu" href="{% url 'user' follow.user.id %}">
                     {{ follow.user.username }}
                 </a>
             </div>

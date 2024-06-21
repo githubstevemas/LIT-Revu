@@ -42,7 +42,7 @@ def account(request):
         form = AccountForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('account')
         else:
             return render(
                 request, 'accounts/account.html', {'form': form}

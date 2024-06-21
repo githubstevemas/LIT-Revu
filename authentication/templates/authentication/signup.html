@@ -1,15 +1,9 @@
 {% extends 'base.html' %}
 
-{% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-{% endblock %}
-
 {% block content %}
 
-<div class="container_login">
-        <div class="signup_form">
+<div class="container-login">
+        <div class="signup-form">
             {% if form.errors %}
                 {{ form.errors }}
             {% endif %}
@@ -31,12 +25,12 @@
                     {{ form.password2.label_tag }}
                     {{ form.password2 }}
                 </div>
-                <button type="submit" class="signup_button">Signup !</button>
+                <button type="submit" class="signup-button">Sign up</button>
             </form>
         </div>
 
         <div>
-            <h2>The Power of LITRevu</h2><br>
+            <h1>The Power of LITRevu</h1><br>
 
             <p>Easily post tickets to request reviews for your books or articles.</p>
             <p>Engage with the community by responding to review requests and providing valuable feedback.</p>

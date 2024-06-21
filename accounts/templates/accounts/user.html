@@ -5,67 +5,76 @@
 
 {% block content %}
 
-    <div class="page_title">
-        {% if user.profile_photo %}
-            <img class="large_profile_photo" src="{{ user.profile_photo.url }}" alt="Profile Photo">
-        {% else %}
-            <p>No profile photo available.</p>
-        {% endif %}
-        <div class="username_container">
-            <h1>{{ user.username }}</h1>
-            <form method="post">
-                {% csrf_token %}
-                {% if is_following %}
-                    <button type="submit" name="unfollow"><i class="fas fa-user-minus"></i></button>
-                {% else %}
-                    <button type="submit" name="follow"><i class="fas fa-user-plus"></i></button>
-                {% endif %}
-            </form>
+<div class="page-title">
+    <div class="user-hero">
+        <div>
+            {% if user.profile_photo %}
+                <img class="large-profile-photo" src="{{ user.profile_photo.url }}" alt="Profile Photo">
+            {% else %}
+                <p>No profile photo available.</p>
+            {% endif %}
+            <div class="profile-container">
+                <h1>{{ user.username }}</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if is_following %}
+                        <button type="submit" name="unfollow"><i class="fas fa-user-minus"></i></button>
+                    {% else %}
+                        <button type="submit" name="follow"><i class="fas fa-user-plus"></i></button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <div class="bio">
+            <span>{{ user.bio }}</span>
         </div>
     </div>
+</div>
 
-    <div class="personal_datas_container">
-        <div class="personal_data">
-            <span class="personal_data_number">{{ tickets_count }}</span>
-            <span>Tickets</span>
-        </div>
-        <div class="personal_data">
-            <span class="personal_data_number">{{ reviews_count }}</span>
-            <span>Reviews</span>
-        </div>
-        <div class="personal_data">
-            <span class="personal_data_number">{{ followers }}</span>
-            <span>Followers</span>
-        </div>
-        <div class="personal_data">
-            <span class="personal_data_number">{{ followings }}</span>
-            <span>Following</span>
-        </div>
+<div class="personal-datas-container">
+    <div class="personal-data">
+        <span class="personal-data-number">{{ tickets_count }}</span>
+        <span>Tickets</span>
     </div>
-
-
-    <div class="page_title">
-        <h2>Favorite Books</h2>
-        <div class="ticket">
-            {% for book in prefered_books|slice:":5" %}
-                <img class="unreviewed_image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
-            {% endfor %}
-        </div>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ reviews_count }}</span>
+        <span>Reviews</span>
     </div>
-
-    <div class="page_title">
-        <h2>Last Activity</h2>
-        <div class="ticket">
-            <ul>
-            {% for post in posts %}
-                {% if post.content_type == 'TICKET' %}
-                    <li>Ticket for {{ post.title }}</li>
-                {% elif post.content_type == 'REVIEW' %}
-                    <li>Review for {{ post.ticket }}</li>
-                {% endif %}
-            {% endfor %}
-            </ul>
-        </div>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ followers }}</span>
+        <span>Followers</span>
     </div>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ followings }}</span>
+        <span>Following</span>
+    </div>
+</div>
+
+
+<div class="page-title">
+    <h2>Favorite Books</h2>
+    <div class="ticket" id="favorite-container">
+        {% for book in prefered_books|slice:":5" %}
+        <div class="ticket-image-wrapper">
+            <img class="unreviewed-image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="page-title">
+    <h2>Last Activity</h2>
+    <div class="ticket">
+        <ul>
+        {% for post in posts %}
+            {% if post.content_type == 'TICKET' %}
+                <li>Ticket for {{ post.title }}</li>
+            {% elif post.content_type == 'REVIEW' %}
+                <li>Review for {{ post.ticket }}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 
 {% endblock content %}

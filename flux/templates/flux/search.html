@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<h2 class="page_title">Search Review</h2>
+<h1 class="page-title">Search Review</h1>
 <form method="get" action="">
     <input type="text" name="q" class="search-field" placeholder="Search...">
     <button type="submit"><i class="fa fa-search"></i></button>
@@ -14,20 +14,20 @@
 
 {% if search_performed %}
     {% if results %}
-        <h2 class="page_title">Results</h2>
+        <h2 class="page-title">Results</h2>
         {% for result in results %}
             <div class="review">
-                    <div class="ticket_content">
-                        <div class="ticket_header">
-                            <span class="title_ticket">{{ result.ticket.title }}</span>
-                            <span class="user_ticket">
+                    <div class="ticket-content">
+                        <div class="ticket-header">
+                            <span class="title-ticket">{{ result.ticket.title }}</span>
+                            <span class="user-ticket">
                                 {% if result.user == request.user %}
                                     <span>Posted by you</span>
                                 {% else %}
                                     {% if result.user.profile_photo %}
-                                        <img class="profile_image" src="{{ result.user.profile_photo.url }}">
+                                        <img class="profile-image" src="{{ result.user.profile_photo.url }}">
                                     {% endif %}
-                                    <a class="button_menu" href="{% url 'user' result.user.id %}">
+                                    <a class="button-menu" href="{% url 'user' result.user.id %}">
                                 {{ result.user }}</a>
                                 {% endif %}
                                 {{ result.time_created|time_ago }}
@@ -35,7 +35,7 @@
 
                         </div>
                         <h3>{{ result.headline }}
-                            <span class="bookmark_icon">
+                            <span class="bookmark-icon">
                                 {% for i in result.rating|times %}
                                     <i class="fa-solid fa-bookmark"></i>
                                 {% endfor %}
@@ -47,28 +47,28 @@
                             </span>
                         </h3>
 
-                        <p class="description_ticket">{{ result.body }}</p>
+                        <p class="description-ticket">{{ result.body }}</p>
 
-                        <div class="reviewed_ticket">
-                            <div class="ticket_image_wrapper">
-                                <img class="ticket_image" src="{{ result.ticket.image.url }}">
+                        <div class="reviewed-ticket">
+                            <div class="ticket-image-wrapper">
+                                <img class="ticket-image" src="{{ result.ticket.image.url }}">
                             </div>
-                            <div class="ticket_content">
-                                <div class="ticket_header">
-                                    <span class="user_ticket">
+                            <div class="ticket-content">
+                                <div class="ticket-header">
+                                    <span class="user-ticket">
                                         {% if result.ticket.user == request.user %}
                                             <span>Posted by you</span>
                                         {% else %}
                                             {% if result.ticket.user.profile_photo %}
-                                                <img class="profile_image" src="{{ result.ticket.user.profile_photo.url }}">
+                                                <img class="profile-image" src="{{ result.ticket.user.profile_photo.url }}">
                                             {% endif %}
-                                            <a class="button_menu" href="{% url 'user' result.ticket.user.id %}">
+                                            <a class="button-menu" href="{% url 'user' result.ticket.user.id %}">
                                         {{ result.ticket.user }}</a>
                                         {% endif %}
                                         {{ result.ticket.time_created|time_ago }}
                                     </span>
                                 </div>
-                                <p class="description_ticket">{{ result.ticket.description }}</p>
+                                <p class="description-ticket">{{ result.ticket.description }}</p>
                             </div>
                         </div>
                     </div>

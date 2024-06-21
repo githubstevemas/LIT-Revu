@@ -5,47 +5,61 @@
 {% block content %}
 
 
-<div class="page_title">
-    {% if request.user.profile_photo %}
-        <img class="large_profile_photo" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
-    {% else %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit</button>
-        </form>
-    {% endif %}
-    <h1>{{ request.user.username }}</h1>
+<div class="page-title">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="user-hero">
+            <div>
+                {% if request.user.profile_photo %}
+                    <img class="large-profile-photo" src="{{ request.user.profile_photo.url }}" alt="Profile Photo">
+                {% else %}
+                    <div class="form-group">
+                        {{ form.profile_photo.label_tag }}
+                        {{ form.profile_photo }}
+                    </div>
+                {% endif %}
+                <h1>{{ request.user.username }}</h1>
+            </div>
+            <div class="form-group">
+                {{ form.bio.label_tag }}
+                {{ form.bio }}
+                <button type="submit" class="button">Save</button>
+            </div>
+        </div>
+    </form>
 </div>
-<div class="personal_datas_container">
-    <div class="personal_data">
-        <span class="personal_data_number">{{ tickets_count }}</span>
+
+<div class="personal-datas-container">
+    <div class="personal-data">
+        <span class="personal-data-number">{{ tickets_count }}</span>
         <span>Tickets</span>
     </div>
-    <div class="personal_data">
-        <span class="personal_data_number">{{ reviews_count }}</span>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ reviews_count }}</span>
         <span>Reviews</span>
     </div>
-    <div class="personal_data">
-        <span class="personal_data_number">{{ followers }}</span>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ followers }}</span>
         <span>Followers</span>
     </div>
-    <div class="personal_data">
-        <span class="personal_data_number">{{ followings }}</span>
+    <div class="personal-data">
+        <span class="personal-data-number">{{ followings }}</span>
         <span>Following</span>
     </div>
 </div>
 
-<div class="page_title">
+<div class="page-title">
     <h2>Favorite Books</h2>
-    <div class="ticket">
+    <div class="ticket" id="favorite-container">
         {% for book in prefered_books|slice:":5" %}
-            <img class="unreviewed_image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
+            <div class="ticket-image-wrapper">
+                <img class="unreviewed-image" src="{{ book.ticket.image.url }}" alt="{{ book.ticket.title }}">
+            </div>
         {% endfor %}
     </div>
 </div>
 
-<div class="page_title">
+<div class="page-title">
     <h2>Last Activity</h2>
     <div class="ticket">
         <ul>
