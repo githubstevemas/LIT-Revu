@@ -14,7 +14,7 @@
             {% if instance.content_type == 'TICKET' %}
                 <div class="ticket">
                     <div class="ticket-image-wrapper">
-                        <img class="ticket-image" src="{{ instance.image.url }}">
+                        <img class="ticket-image" src="{{ instance.image.url }}" alt="instance.title">
                     </div>
                     <div class="ticket-content">
                         <div class="ticket-header">
@@ -70,13 +70,13 @@
 
                         <div class="reviewed-ticket">
                             <div class="ticket-image-wrapper">
-                                <img class="ticket-image" src="{{ instance.ticket.image.url }}">
+                                <img class="ticket-image" src="{{ instance.ticket.image.url }}" alt="instance.ticket.title">
                             </div>
                             <div class="ticket-content">
                                 <div class="ticket-header">
                                     <span class="user-ticket">
                                         {% if request.user.profile_photo %}
-                                            <img class="profile-image" src="{{ instance.ticket.user.profile_photo.url }}">
+                                            <img class="profile-image" src="{{ instance.ticket.user.profile_photo.url }}" alt="instance.ticket.title">
                                         {% endif %}
                                         <a class="button-menu" href="{% url 'user' instance.ticket.user.id %}">
                                         {{ instance.ticket.user }}</a>
